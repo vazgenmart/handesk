@@ -1,0 +1,16 @@
+<?php
+
+namespace App\Http\Controllers;
+
+class HomeController extends Controller
+{
+    public function form1()
+    {
+        return view('home.form1');
+    }
+
+    public function form2()
+    {
+        return view('home.form2');
+    }
+}

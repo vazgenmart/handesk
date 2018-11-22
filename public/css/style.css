@@ -1,0 +1,178 @@
+.body1 {
+    background: #0061A3;
+    min-height: 500px;
+}
+.body2 {
+    background: black;
+    min-height: 500px;
+}
+
+.big_container {
+    background-color: white;
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+
+.title {
+    font-size: 32px
+}
+
+.content {
+    padding: 75px;
+}
+
+.logo img {
+    width: 40%;
+    float: right;
+}
+
+.logo {
+    margin-bottom: 50px;
+    height: 90px;
+}
+
+.text {
+    font-size: 18px;
+    text-align: justify;
+    line-height: 22px;
+}
+
+.input {
+    width: 100%;
+    height: 40px;
+    background-color: #DDDCDC;
+    color: #828282;
+    outline: none;
+    border: 1px solid #828282;
+    padding-left: 20px;
+}
+
+.input:focus {
+    outline: none;
+}
+
+label {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.form_rows {
+    margin-top: 30px;
+}
+
+.first_row {
+    margin-bottom: 80px;
+}
+
+.identity {
+    margin-top: 50px;
+}
+
+.file_input, #address_file {
+    display: none;
+}
+
+.identity_form, .address_input {
+    display: block;
+    height: 40px;
+    width: 100%;
+    border-radius: 50px;
+    background-color: #DDDCDC;
+    border: none;
+    padding-left: 20px;
+    margin-bottom: 20px;
+    line-height: 40px;
+    cursor: pointer;
+}
+
+.identity:focus, .address_input:focus {
+    outline: none;
+}
+
+.choose_block {
+    position: relative;
+}
+
+.choose {
+    position: absolute;
+    right: -100px;
+    top: 45px;
+    color: #007bff;
+}
+
+.address {
+    margin-top: 50px;
+}
+
+.request_col {
+    margin-top: 50px;
+}
+
+#request_text {
+    width: 680px;
+    height: 196px;
+    background-color: #DDDCDC;
+    border: 1px solid #828282;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.submit_btn {
+    width: 250px;
+    height: 62px;
+    background: #0061A3;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    color: white;
+    font-size: 22px;
+    border: none;
+    float: right;
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+
+.new {
+    padding: 0;
+}
+
+.new span {
+    right: -115px;
+}
+
+@media screen and (max-width: 780px) {
+    .big_container {
+        width: 80%;
+    }
+
+    .choose_block {
+        margin-bottom: 20px;
+    }
+
+    .content {
+        padding: 50px 0 50px 0;
+    }
+
+    .logo {
+        margin-bottom: 0;
+    }
+
+    .choose {
+        right: unset;
+        top: 80px;
+    }
+
+    #request_text {
+        width: 100%;
+    }
+
+    .submit_col {
+        text-align: center;
+    }
+
+    .submit_btn {
+        float: none;
+    }
+
+    .new span {
+        right: unset;
+    }
+}
