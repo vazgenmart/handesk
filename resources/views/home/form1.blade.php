@@ -31,21 +31,21 @@
                 <div class="row form_rows">
                     <div class="col-md-5 col-xs-12">
                         <label for="name">First Name</label>
-                        <input type="text" id="name" class="input">
+                        <input type="text" id="name" class="input" name="first_name">
                     </div>
                     <div class="col-md-5 col-xs-12">
                         <label for="lastname">Last Name</label>
-                        <input type="text" id="lastname" class="input">
+                        <input type="text" id="lastname" class="input" name="last_name">
                     </div>
                 </div>
                 <div class="row form_rows">
                     <div class="col-md-5 col-xs-12">
                         <label for="email">Email</label>
-                        <input type="email" id="email" class="input">
+                        <input type="email" id="email" class="input" name="email">
                     </div>
                     <div class="col-md-5 col-xs-122">
                         <label for="phone">Phone Number</label>
-                        <input type="number" id="phone" class="input">
+                        <input type="number" id="phone" class="input" name="phone">
                     </div>
                 </div>
                 <div class="row form_rows">
@@ -54,50 +54,50 @@
                         <select id="country" name="country" title="Country of Residence" aria-required="true"
                                 class="input">
                             <option value="">Please select...</option>
-                            <option value="tfa_89" id="tfa_89" class="">Austria</option>
-                            <option value="tfa_59" id="tfa_59" class="">Belgium</option>
-                            <option value="tfa_60" id="tfa_60" class="">Bulgaria</option>
-                            <option value="tfa_61" id="tfa_61" class="">Croatia</option>
-                            <option value="tfa_62" id="tfa_62" class="">Republic of Cyprus</option>
-                            <option value="tfa_63" id="tfa_63" class="">Czech Republic</option>
-                            <option value="tfa_64" id="tfa_64" class="">Denmark</option>
-                            <option value="tfa_65" id="tfa_65" class="">Estonia</option>
-                            <option value="tfa_66" id="tfa_66" class="">Finland</option>
-                            <option value="tfa_67" id="tfa_67" class="">France</option>
-                            <option value="tfa_68" id="tfa_68" class="">Germany</option>
-                            <option value="tfa_69" id="tfa_69" class="">Greece</option>
-                            <option value="tfa_70" id="tfa_70" class="">Hungary</option>
-                            <option value="tfa_71" id="tfa_71" class="">Ireland</option>
-                            <option value="tfa_72" id="tfa_72" class="">Italy</option>
-                            <option value="tfa_73" id="tfa_73" class="">Latvia</option>
-                            <option value="tfa_74" id="tfa_74" class="">Lithuania</option>
-                            <option value="tfa_75" id="tfa_75" class="">Luxembourg</option>
-                            <option value="tfa_76" id="tfa_76" class="">Malta</option>
-                            <option value="tfa_77" id="tfa_77" class="">Netherlands</option>
-                            <option value="tfa_78" id="tfa_78" class="">Poland</option>
-                            <option value="tfa_79" id="tfa_79" class="">Portugal</option>
-                            <option value="tfa_80" id="tfa_80" class="">Romania</option>
-                            <option value="tfa_81" id="tfa_81" class="">Slovakia</option>
-                            <option value="tfa_82" id="tfa_82" class="">Slovenia</option>
-                            <option value="tfa_83" id="tfa_83" class="">Spain</option>
-                            <option value="tfa_84" id="tfa_84" class="">Sweden</option>
-                            <option value="tfa_85" id="tfa_85" class="">United Kingdom</option>
-                            <option value="tfa_86" id="tfa_86" class="">Other</option>
+                            <option value="1" id="tfa_89" class="">Austria</option>
+                            <option value="2" id="tfa_59" class="">Belgium</option>
+                            <option value="3" id="tfa_60" class="">Bulgaria</option>
+                            <option value="4" id="tfa_61" class="">Croatia</option>
+                            <option value="5" id="tfa_62" class="">Republic of Cyprus</option>
+                            <option value="6" id="tfa_63" class="">Czech Republic</option>
+                            <option value="7" id="tfa_64" class="">Denmark</option>
+                            <option value="8" id="tfa_65" class="">Estonia</option>
+                            <option value="9" id="tfa_66" class="">Finland</option>
+                            <option value="10" id="tfa_67" class="">France</option>
+                            <option value="11" id="tfa_68" class="">Germany</option>
+                            <option value="12" id="tfa_69" class="">Greece</option>
+                            <option value="13" id="tfa_70" class="">Hungary</option>
+                            <option value="14" id="tfa_71" class="">Ireland</option>
+                            <option value="15" id="tfa_72" class="">Italy</option>
+                            <option value="16" id="tfa_73" class="">Latvia</option>
+                            <option value="17" id="tfa_74" class="">Lithuania</option>
+                            <option value="18" id="tfa_75" class="">Luxembourg</option>
+                            <option value="19" id="tfa_76" class="">Malta</option>
+                            <option value="20" id="tfa_77" class="">Netherlands</option>
+                            <option value="21" id="tfa_78" class="">Poland</option>
+                            <option value="22" id="tfa_79" class="">Portugal</option>
+                            <option value="23" id="tfa_80" class="">Romania</option>
+                            <option value="24" id="tfa_81" class="">Slovakia</option>
+                            <option value="25" id="tfa_82" class="">Slovenia</option>
+                            <option value="26" id="tfa_83" class="">Spain</option>
+                            <option value="27" id="tfa_84" class="">Sweden</option>
+                            <option value="28" id="tfa_85" class="">United Kingdom</option>
+                            <option value="29" id="tfa_86" class="">Other</option>
                         </select>
                     </div>
                     <div class="col-md-5 col-xs-12">
                         <label for="address">Address and House number</label>
-                        <input type="text" id="address" class="input">
+                        <input type="text" id="address" class="input" name="address">
                     </div>
                 </div>
                 <div class="row form_rows">
                     <div class="col-md-5 col-xs-12">
                         <label for="zip">ZIP-Code</label>
-                        <input type="number" id="zip" class="input">
+                        <input type="number" id="zip" class="input" name="zip">
                     </div>
                     <div class="col-md-5 col-xs-12">
                         <label for="city">City</label>
-                        <input type="text" id="city" class="input">
+                        <input type="text" id="city" class="input" name="city">
                     </div>
                 </div>
 
@@ -116,7 +116,7 @@
                         <label for="identity">Proof of Identity</label>
                         <div id="identity" class="identity_form">Choose File</div>
                         <span class="choose">No file chosen</span>
-                        <input type="file" id="identity_file" class="file_input">
+                        <input type="file" id="identity_file" class="file_input" name="prof_of_identity[]">
                     </div>
                     <div class="col-12">
                         <a href="/" class="upload add_field_button2">Upload another document
@@ -140,7 +140,7 @@
                         </label>
                         <div id="address_input" class="address_input">Choose File</div>
                         <span class="choose">No file chosen</span>
-                        <input type="file" id="address_file" name="mytext[]" class="file_input">
+                        <input type="file" id="address_file" name="prof_of_address[]" class="file_input">
                     </div>
                     <div class="col-12">
                         <a href="/" class="upload add_field_button">Upload another document
@@ -159,17 +159,17 @@
                         </p>
                     </div>
                     <div class="col-md-5 col-xs-12">
-                        <select id="request" name="country" title="Country of Residence" aria-required="true"
+                        <select id="request" name="request_type" title="Request Type" aria-required="true"
                                 class="input">
                             <option value="">Please select...</option>
-                            <option value="tfa_89" id="request1" class="">Right of access by the data subject</option>
-                            <option value="tfa_59" id="request2" class="">Right to rectification</option>
-                            <option value="tfa_60" id="request3" class="">Right to erasure (‘right to be forgotten’)
+                            <option value="1" id="request1" class="">Right of access by the data subject</option>
+                            <option value="2" id="request2" class="">Right to rectification</option>
+                            <option value="3" id="request3" class="">Right to erasure (‘right to be forgotten’)
                             </option>
-                            <option value="tfa_61" id="request4" class="">Right to restriction of processing</option>
-                            <option value="tfa_62" id="request5" class="">Right to data portability</option>
-                            <option value="tfa_63" id="request6" class="">Right to object</option>
-                            <option value="tfa_64" id="request7" class="">Other comment or question</option>
+                            <option value="4" id="request4" class="">Right to restriction of processing</option>
+                            <option value="5" id="request5" class="">Right to data portability</option>
+                            <option value="6" id="request6" class="">Right to object</option>
+                            <option value="7" id="request7" class="">Other comment or question</option>
                         </select>
                     </div>
                 </div>
@@ -185,7 +185,7 @@
                         </p>
                     </div>
                     <div class="col-md-5 col-xs-12">
-                <textarea name="request_text" id="request_text" cols="100" rows="10"
+                <textarea name="request_description" id="request_text" cols="100" rows="10"
                           placeholder="Type Text Here"></textarea>
                     </div>
                 </div>

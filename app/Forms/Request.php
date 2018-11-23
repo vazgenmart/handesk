@@ -14,5 +14,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Request extends BaseModel
 {
-
+    protected $table = 'request';
 }
