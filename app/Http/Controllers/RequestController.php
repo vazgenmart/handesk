@@ -26,7 +26,32 @@ class RequestController extends Controller
 
     public function store(Request $requestModel, \Illuminate\Http\Request $request)
     {
-//        dd($request->all());
+
+        $this->validate($request, [
+            'first_name' => 'required',
+        ]);
+
+        $imageNames = [];
+        $imageNamesAddress = [];
+        if($request->post('first_name')) {
+        $images = request()->prof_of_identity;
+        $images1 = request()->prof_of_address;
+
+            foreach ($images as $image) {
+                $extension = $image->getClientOriginalExtension();
+                $imageName = time();
+                $imageUniqueName = time() . '.' . $extension;
+                $image->move(public_path('images'), $imageUniqueName);
+                $imageNamesAddress[] = $imageUniqueName;
+            }
+            foreach ($images1 as $image) {
+                $extension = $image->getClientOriginalExtension();
+                $imageName = time();
+                $imageUniqueName = time() . '.' . $extension;
+                $image->move(public_path('images'), $imageUniqueName);
+                $imageNames[] = $imageUniqueName;
+            }
+        }
         $requestModel->create(
             [
                 'first_name' => $request->first_name,
@@ -36,8 +61,8 @@ class RequestController extends Controller
                 'address' => $request->address,
                 'zip' => $request->zip,
                 'city' => $request->city,
-                'prof_of_identity' => $request->prof_of_identity,
-                'prof_of_address' => $request->prof_of_address,
+                'prof_of_identity' => json_encode($imageNames),
+                'prof_of_address' => json_encode($imageNamesAddress),
                 'request_type' => $request->request_type,
                 'request_description' => $request->request_description,
                 'email' => $request->email,

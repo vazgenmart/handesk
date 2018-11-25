@@ -30,6 +30,8 @@ Route::post('webhook/bitbucket', 'WebhookController@store');
 Route::group(['middleware' => ['auth', 'userLocale']], function () {
     Route::get('profile', 'ProfileController@show')->name('profile.show');
     Route::put('profile', 'ProfileController@update')->name('profile.update');
+    Route::get('request/show', 'RequestController@show')->name('request.show');
+    Route::get('request/index', 'RequestController@index')->name('request.index');
     Route::post('password', 'ProfileController@password')->name('profile.password');
 
     Route::get('tickets/merge', 'TicketsMergeController@index')->name('tickets.merge.index');

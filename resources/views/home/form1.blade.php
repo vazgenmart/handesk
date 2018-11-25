@@ -3,7 +3,7 @@
     <body class="body1">
     <div class="container big_container">
         <div class="content">
-            <form action="/request_form" method="post">
+            <form action="/request_form" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="row first_row">
                     <div class="col-12">

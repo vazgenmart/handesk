@@ -43,7 +43,7 @@
             e.preventDefault();
             if (x < max_fields) { //max input box allowed
                 x++; //text box increment
-                $(wrapper).append('<div class="choose_block  input_fields_wrap col-md-12 new"><label for= "address_input_' + x + ' ">Address Verification Document </label><div id="address_input_' + x + '" class="address_input">Choose File</div><span class="choose">No file chosen</span><input type="file" id="address_file_' + x + '" class="file_input"></div><a href="#" class="remove_field">Remove</a></div>')
+                $(wrapper).append('<div class="choose_block  input_fields_wrap col-md-12 new"><label for= "address_input_' + x + ' ">Address Verification Document </label><div id="address_input_' + x + '" class="address_input">Choose File</div><span class="choose">No file chosen</span><input type="file" id="address_file_' + x + '" name="prof_of_address[]" class="file_input"></div><a href="#" class="remove_field">Remove</a></div>')
                 ; //add input box
                 $("#address_input_" + x).on("click", function () {
                     $("#address_file_" + x).click();
@@ -54,7 +54,7 @@
             e.preventDefault();
             if (y < max_fields) { //max input box allowed
                 y++; //text box increment
-                $(wrapper2).append('<div class="choose_block  input_fields_wrap2 col-md-12 new"><label for= "identity_' + y + ' ">Proof of Identity </label><div id="identity_' + y + '" class="identity_form">Choose File</div><span class="choose">No file chosen</span><input type="file" id="identity_file_' + y + '" class="file_input"></div><a href="#" class="remove_field2">Remove</a></div>')
+                $(wrapper2).append('<div class="choose_block  input_fields_wrap2 col-md-12 new"><label for= "identity_' + y + ' ">Proof of Identity </label><div id="identity_' + y + '" class="identity_form">Choose File</div><span class="choose">No file chosen</span><input type="file" id="identity_file_' + y + '" class="file_input" name="prof_of_identity[]"></div><a href="#" class="remove_field2">Remove</a></div>')
                 ; //add input box
                 $("#identity_" + y).on("click", function () {
                     $("#identity_file_" + y).click();
