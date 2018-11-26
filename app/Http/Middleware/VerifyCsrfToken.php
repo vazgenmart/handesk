@@ -13,5 +13,6 @@ class VerifyCsrfToken extends BaseVerifier
      */
     protected $except = [
         'webhook/*',
+        '/request_form',
     ];
 }

@@ -95,7 +95,7 @@ label {
 
 .choose {
     position: absolute;
-    right: -100px;
+    right: -170px;
     top: 45px;
     color: #007bff;
 }
@@ -135,7 +135,7 @@ label {
 }
 
 .new span {
-    right: -115px;
+    right: -185px;
 }
 
 @media screen and (max-width: 780px) {

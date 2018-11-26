@@ -13,6 +13,7 @@
 
 Route::get('form_blue', 'HomeController@form1');
 Route::get('form_black', 'HomeController@form2');
+Route::get('show/{id}', 'RequestController@show');
 Route::get('/', 'HomeController@form1');
 Route::post('/request_form', 'RequestController@store');
 
