@@ -61,6 +61,10 @@
                 <td colspan="2">{{ $request->created_at }}</td>
             </tr>
             <tr>
+                <th scope="row" style="font-weight: bold">From Site</th>
+                <td colspan="2">{{ $request->from_site }}</td>
+            </tr>
+            <tr>
                 <th scope="row" style="font-weight: bold">Prof of Identity</th>
                 @foreach($identity as $path)
                     <td colspan="2"><img src="/images/{{$path}}" alt="prof_of_identity" width="50%"></td>

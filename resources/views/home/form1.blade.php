@@ -10,6 +10,9 @@
                     <div class="col-12">
                         <div class="logo"><img src="images/DGD-Logo.jpg" alt="logo"></div>
                         <div class="clearfix"></div>
+                        @if ($errors->any())
+                            <div style="color: red; font-weight: bold"> {{ implode('', $errors->all(':message')) }}</div>
+                        @endif
                         <p class="title">Data Subjects' Rights Request Form</p>
                         <p class="text">
                             If you are a resident of the European Union or otherwise entitled please fill out this
@@ -250,6 +253,7 @@
 
                 $(this).siblings(".choose, .input_placeholder").text(fileName);
             });
+
             function getParentUrl() {
                 var isInIframe = (parent !== window),
                     parentUrl = null;
@@ -260,6 +264,7 @@
 
                 return parentUrl;
             }
+
             $('#from_site').val(getParentUrl());
         });
     </script>

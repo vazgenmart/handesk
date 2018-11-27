@@ -28,29 +28,41 @@ class RequestController extends Controller
     public function store(Request $requestModel, \Illuminate\Http\Request $request)
     {
 
-        $this->validate($request, [
+        $validator = $this->validate($request, [
             'first_name' => 'required',
+            'country' => 'required',
+            'address' => 'required',
+            'zip' => 'required',
+            'city' => 'required',
+            'request_type' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
         ]);
-
+//        if ($validator->fails()) {
+//            return redirect()->back()->withErrors($validator);
+//        };
         $imageNames = [];
         $imageNamesAddress = [];
         if ($request->post('first_name')) {
             $images = request()->prof_of_identity;
             $images1 = request()->prof_of_address;
-
-            foreach ($images as $image) {
-                $extension = $image->getClientOriginalExtension();
-                $imageName1 = time();
-                $imageUniqueName1 = time(). rand(0,1000000) . '.' . $extension;
-                $image->move(public_path('images'), $imageUniqueName1);
-                $imageNamesAddress[] = $imageUniqueName1;
+            if (is_array($images) || is_object($images)) {
+                foreach ($images as $image) {
+                    $extension = $image->getClientOriginalExtension();
+                    $imageName1 = time();
+                    $imageUniqueName1 = time() . rand(0, 1000000) . '.' . $extension;
+                    $image->move(public_path('images'), $imageUniqueName1);
+                    $imageNamesAddress[] = $imageUniqueName1;
+                }
             }
-            foreach ($images1 as $image) {
-                $extension = $image->getClientOriginalExtension();
-                $imageName = time();
-                $imageUniqueName = time(). rand(0,1000000) . '.' . $extension;
-                $image->move(public_path('images'), $imageUniqueName);
-                $imageNames[] = $imageUniqueName;
+            if (is_array($images1) || is_object($images1)) {
+                foreach ($images1 as $image) {
+                    $extension = $image->getClientOriginalExtension();
+                    $imageName = time();
+                    $imageUniqueName = time() . rand(0, 1000000) . '.' . $extension;
+                    $image->move(public_path('images'), $imageUniqueName);
+                    $imageNames[] = $imageUniqueName;
+                }
             }
         }
         $requestModel->create(
@@ -58,7 +70,7 @@ class RequestController extends Controller
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'phone' => $request->phone,
-                'country' =>$request->country,
+                'country' => $request->country,
                 'address' => $request->address,
                 'zip' => $request->zip,
                 'city' => $request->city,
