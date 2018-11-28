@@ -1,10 +1,56 @@
 @extends('layouts.app')
 @section('content')
+    <style>
+        .iframe_text {
+            text-align: center;
+            padding-bottom: 20px;
+        }
+
+        .iframe_text > p {
+            color: #000000;
+            font-size: 20px;
+            visibility: hidden;
+            position: absolute;
+        }
+
+        .textBox {
+            height: 30px;
+            width: 300px;
+        }
+
+        .blue_form {
+            width: 170px;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 20px;
+            height: 52px;
+            background: #2D6BD7;
+            color: white;
+        }
+
+        .black_form {
+            width: 170px;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 20px;
+            height: 52px;
+            background: black;
+            color: white;
+        }
+    </style>
     <div class="description">
         <h3>{{ trans_choice('Requests' , 2)}} ( {{ $requests->count() }} )</h3>
     </div>
+    <div class="iframe_text">
+        <p id="p1">Hello, I'm TEXT 1</p>
+        <p id="p2">Hi, I'm the 2nd TEXT</p><br/>
 
-
+        <button onclick="copyToClipboard('#p1')" class="blue_form">Copy Blue form</button>
+        <button onclick="copyToClipboard('#p2')" class="black_form">Copy Black form</button>
+        <div hidden>
+            <input class="textBox" type="text" id="" placeholder="Dont belive me?..TEST it here..;)"/>
+        </div>
+    </div>
     @paginator($requests)
     <table class="striped">
         <thead>
@@ -47,5 +93,13 @@
         </tbody>
     </table>
     @paginator($requests)
-
+    <script>
+        function copyToClipboard(element) {
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val($(element).text()).select();
+            document.execCommand("copy");
+            $temp.remove();
+        }
+    </script>
 @endsection
