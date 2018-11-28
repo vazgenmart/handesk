@@ -2,6 +2,7 @@
     background: #0061A3;
     min-height: 500px;
 }
+
 .body2 {
     background: black;
     min-height: 500px;
@@ -175,4 +176,12 @@ label {
     .new span {
         right: unset;
     }
+}
+
+#phone::-webkit-inner-spin-button,
+#phone::-webkit-outer-spin-button, #zip::-webkit-inner-spin-button, #zip::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
 }

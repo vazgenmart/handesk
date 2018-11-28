@@ -49,7 +49,7 @@
                     </div>
                     <div class="col-md-5 col-xs-122">
                         <label for="phone">Phone Number</label>
-                        <input type="number" id="phone" class="input" name="phone">
+                        <input type="number" id="phone" class="input" name="phone" min="0">
                     </div>
                 </div>
                 <div class="row form_rows">
