@@ -34,36 +34,98 @@ class TicketsController extends Controller
         return view('tickets.create');
     }
 
-    public function store()
+    public function store(Ticket $tickets, \Illuminate\Http\Request $request)
     {
-        $this->validate(request(), [
-            'requester' => 'required|array',
-            'title'     => 'required|min:3',
-            'body'      => 'required',
-            'team_id'   => 'nullable|exists:teams,id',
+        $this->validate($request, [
+//            'requester' => 'required|array',
+//            'title'     => 'required|min:3',
+//            'body'      => 'required',
+            'first_name' => 'required',
+            'country' => 'required',
+            'address' => 'required',
+            'zip' => 'required',
+            'city' => 'required',
+            'request_type' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'team_id' => 'nullable|exists:teams,id',
         ]);
-        $ticket = Ticket::createAndNotify(request('requester'), request('title'), request('body'), request('tags'));
-        $ticket->updateStatus(request('status'));
+        $imageNames = [];
+        $imageNamesAddress = [];
 
+        if ($request->post('first_name')) {
+            $images = request()->prof_of_identity;
+            $images1 = request()->prof_of_address;
+            if (is_array($images) || is_object($images)) {
+                foreach ($images as $image) {
+                    $extension = $image->getClientOriginalExtension();
+                    $imageName1 = time();
+                    $imageUniqueName1 = time() . rand(0, 1000000) . '.' . $extension;
+                    $image->move(public_path('images'), $imageUniqueName1);
+                    $imageNamesAddress[] = $imageUniqueName1;
+                }
+            }
+            if (is_array($images1) || is_object($images1)) {
+                foreach ($images1 as $image) {
+                    $extension = $image->getClientOriginalExtension();
+                    $imageName = time();
+                    $imageUniqueName = time() . rand(0, 1000000) . '.' . $extension;
+                    $image->move(public_path('images'), $imageUniqueName);
+                    $imageNames[] = $imageUniqueName;
+                }
+            }
+        }
+
+        if ($request->post('requester')) {
+            $ticket = Ticket::createAndNotify(request('requester'), request('title'), request('body'), request('tags'),json_encode($imageNames), json_encode($imageNamesAddress));
+            $ticket->updateStatus(request('status'));
+        }
         if (request('team_id')) {
             $ticket->assignToTeam(request('team_id'));
         }
 
-        return redirect()->route('tickets.show', $ticket);
+
+        $tickets->create(
+            [
+                'first_name' => $request->first_name,
+//                'status' => $request->status,
+                'body' => $request->body,
+                'title' => $request->title,
+//                'priority' => $request->priority,
+                'last_name' => $request->last_name,
+                'requester_id' => $request->requester_id,
+//                'level' => $request->level,
+                'phone' => $request->phone,
+                'country' => $request->country,
+                'address' => $request->address,
+                'zip' => $request->zip,
+                'city' => $request->city,
+                'prof_of_identity' => json_encode($imageNamesAddress),
+                'prof_of_address' => json_encode($imageNames),
+                'request_type' => $request->request_type,
+                'request_description' => $request->request_description,
+                'email' => $request->email,
+                'from_site' => $request->from_site,
+            ]
+        );
+
+        return redirect()->back();
     }
 
-    public function reopen(Ticket $ticket)
+    public
+    function reopen(Ticket $ticket)
     {
         $ticket->updateStatus(Ticket::STATUS_OPEN);
 
         return back();
     }
 
-    public function update(Ticket $ticket)
+    public
+    function update(Ticket $ticket)
     {
         $this->validate(request(), [
             'requester' => 'required|array',
-            'priority'  => 'required|integer',
+            'priority' => 'required|integer',
             //'title'      => 'required|min:3',
         ]);
         $ticket->updateWith(request('requester'), request('priority'));

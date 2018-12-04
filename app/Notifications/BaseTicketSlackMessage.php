@@ -14,7 +14,7 @@ class BaseTicketSlackMessage extends SlackMessage
 
         $this->overrideToIfChannelOrUser($notifable);
 
-        if ($ticket) {
+        if ($ticket && $ticket->requester) {
             $this->attachment(function ($attachment) use ($ticket) {
                 $attachment->title($ticket->requester->name.' : '.$ticket->title, route('tickets.show', $ticket))
                             ->content($ticket->body);

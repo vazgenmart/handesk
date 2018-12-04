@@ -19,7 +19,7 @@
     <div class="comment">
         <div class="date mb4">
             <div class="float-left mr3">@gravatar($ticket->requester->email) </div>
-            <div class="pt1">{{ $ticket->requester->name }} · {{ $ticket->created_at->diffForHumans() }}</div>
+            <div class="pt1">{{isset( $ticket->requester) ? $ticket->requester->name : '' }} · {{ $ticket->created_at->diffForHumans() }}</div>
         </div>
         <div>{!! nl2br( strip_tags($ticket->body)) !!} </div>
         @include('components.attachments', ["attachments" => $ticket->attachments])

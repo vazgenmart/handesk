@@ -32,14 +32,28 @@ class Ticket extends BaseModel
     const PRIORITY_NORMAL    = 2;
     const PRIORITY_HIGH      = 3;
     const PRIORITY_BLOCKER   = 4;
+    const TYPE = ['Right of access by the data subject', 'Right to rectification', 'Right to erasure (‘right to be forgotten’)', 'Right to restriction of processing', 'Right to data portability', 'Right to object', 'Other comment or question'];
+    const COUNTRY = ['Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Republic of Cyprus', 'Czech Republic', 'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary', 'Ireland', 'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 'Malta', 'Netherlands', 'Poland', 'Portugal', 'Romania', 'Slovakia', 'Slovenia', 'Spain', 'Sweden', 'United Kingdom', 'Other'];
 
-    public static function createAndNotify($requester, $title, $body, $tags)
+
+    public static function createAndNotify($requester, $title, $body, $tags, $imageNamesAddress, $imageNames)
     {
         $requester = Requester::findOrCreate($requester['name'] ?? 'Unknown', $requester['email'] ?? null);
         $ticket    = $requester->tickets()->create([
             'title'        => substr($title, 0, 190),
             'body'         => $body,
             'public_token' => str_random(24),
+            'first_name' => request('first_name'),
+            'last_name' => request('last_name'),
+            'email' => request('email'),
+            'phone' => request('phone'),
+            'country' => request('country'),
+            'address' => request('address'),
+            'zip' => request('zip'),
+            'city' => request('city'),
+            'request_type' => request('request_type'),
+            'prof_of_identity' => $imageNamesAddress,
+            'prof_of_address' => $imageNames,
         ])->attachTags($tags);
 
         tap(new TicketCreated($ticket), function ($newTicketNotification) use ($requester) {
