@@ -75,8 +75,11 @@ class NewComment extends Notification implements ShouldQueue
         return (new BaseTicketSlackMessage(null, $notifiable))
                 ->content(__('notification.ticketUpdated'))
                 ->attachment(function ($attachment) {
-                    $attachment->title($this->ticket->requester->name.': '.$this->ticket->title, route('tickets.show', $this->ticket))
-                               ->content(trans_choice('lead.status', 1).': '.__('ticket.'.$this->ticket->statusName())."\n\n".$this->comment->body);
+                    if($this->ticket->requester){
+                        $attachment->title($this->ticket->requester->name.': '.$this->ticket->title, route('tickets.show', $this->ticket))
+                            ->content(trans_choice('lead.status', 1).': '.__('ticket.'.$this->ticket->statusName())."\n\n".$this->comment->body);
+                    }
+
                 });
     }
 
