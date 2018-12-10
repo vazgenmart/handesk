@@ -5,7 +5,6 @@
             <a href="{{ url()->previous() }}">{{ trans_choice('ticket.ticket', 2) }}</a>
         </div>
     </div>
-s
     {{ Form::open(["url" => '/request_form',"enctype"=>"multipart/form-data"]) }}
     <div class="comment description actions">
         <table class="maxw600 no-padding">

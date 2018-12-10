@@ -52,6 +52,7 @@ class Ticket extends BaseModel
             'zip' => request('zip'),
             'city' => request('city'),
             'request_type' => request('request_type'),
+            'request_description' => request('request_description'),
             'prof_of_identity' => $imageNamesAddress,
             'prof_of_address' => $imageNames,
         ])->attachTags($tags);
