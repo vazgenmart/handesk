@@ -1,5 +1,13 @@
 @extends('layouts.form')
 @section('content')
+    <?php
+    $messages = [];
+    if ($errors->any()) {
+        foreach ($errors->getMessages() as $key => $message) {
+            $messages[$key] = $message[0];
+        }
+    }
+    ?>
     <body class="body1">
     <div class="container big_container">
         <div class="content">
@@ -10,9 +18,6 @@
                     <div class="col-12">
                         <div class="logo"><img src="images/DGD-Logo.jpg" alt="logo"></div>
                         <div class="clearfix"></div>
-                        @if ($errors->any())
-                            <div style="color: red; font-weight: bold"> {{ implode('', $errors->all(':message')) }}</div>
-                        @endif
                         <p class="title">Data Subjects' Rights Request Form</p>
                         <p class="text">
                             If you are a resident of the European Union or otherwise entitled please fill out this
@@ -34,27 +39,39 @@
                 </div>
                 <div class="row form_rows">
                     <div class="col-md-5 col-xs-12">
-                        <label for="name">First Name</label>
+                        <label for="name">First Name*</label>
                         <input type="text" id="name" class="input" name="first_name">
+                        @if(isset($messages['first_name']))
+                            <div style="color: red">{{$messages['first_name']}}</div>
+                        @endif
                     </div>
                     <div class="col-md-5 col-xs-12">
-                        <label for="lastname">Last Name</label>
+                        <label for="lastname">Last Name*</label>
                         <input type="text" id="lastname" class="input" name="last_name">
+                        @if(isset($messages['last_name']))
+                            <div style="color: red">{{$messages['last_name']}}</div>
+                        @endif
                     </div>
                 </div>
                 <div class="row form_rows">
                     <div class="col-md-5 col-xs-12">
-                        <label for="email">Email</label>
+                        <label for="email">Email*</label>
                         <input type="email" id="email" class="input" name="email">
+                        @if(isset($messages['email']))
+                            <div style="color: red">{{$messages['email']}}</div>
+                        @endif
                     </div>
                     <div class="col-md-5 col-xs-122">
-                        <label for="phone">Phone Number</label>
-                        <input type="number" id="phone" class="input" name="phone" min="0">
+                        <label for="phone">Phone Number*</label>
+                        <input type="text" id="phone" class="input" name="phone" min="0">
+                        @if(isset($messages['phone']))
+                            <div style="color: red">{{$messages['phone']}}</div>
+                        @endif
                     </div>
                 </div>
                 <div class="row form_rows">
                     <div class="col-md-5 col-xs-12">
-                        <label for="country">Country of Residence</label>
+                        <label for="country">Country of Residence*</label>
                         <select id="country" name="country" title="Country of Residence" aria-required="true"
                                 class="input">
                             <option value="">Please select...</option>
@@ -88,20 +105,32 @@
                             <option value="27" id="tfa_85" class="">United Kingdom</option>
                             <option value="28" id="tfa_86" class="">Other</option>
                         </select>
+                        @if(isset($messages['country']))
+                            <div style="color: red">{{$messages['country']}}</div>
+                        @endif
                     </div>
                     <div class="col-md-5 col-xs-12">
-                        <label for="address">Address and House number</label>
+                        <label for="address">Address and House number*</label>
                         <input type="text" id="address" class="input" name="address">
+                        @if(isset($messages['address']))
+                            <div style="color: red">{{$messages['address']}}</div>
+                        @endif
                     </div>
                 </div>
                 <div class="row form_rows">
                     <div class="col-md-5 col-xs-12">
-                        <label for="zip">ZIP-Code</label>
-                        <input type="number" id="zip" class="input" name="zip">
+                        <label for="zip">ZIP-Code*</label>
+                        <input type="text" id="zip" class="input" name="zip">
+                        @if(isset($messages['zip']))
+                            <div style="color: red">{{$messages['zip']}}</div>
+                        @endif
                     </div>
                     <div class="col-md-5 col-xs-12">
-                        <label for="city">City</label>
+                        <label for="city">City*</label>
                         <input type="text" id="city" class="input" name="city">
+                        @if(isset($messages['city']))
+                            <div style="color: red">{{$messages['city']}}</div>
+                        @endif
                     </div>
                 </div>
 
@@ -116,11 +145,14 @@
                             or any other proof of identity.
                         </p>
                     </div>
-                    <div class="choose_block input_fields_wrap2 col-md-5 col-xs-12">
-                        <label for="identity">Proof of Identity</label>
+                    <div class="choose_block input_fields_wrap2 col-md-12 col-xs-12">
+                        <label for="identity">Proof of Identity*</label>
                         <div id="identity" class="identity_form input_placeholder">Choose File</div>
-                        <span class="choose">No file chosen</span>
+                        <span class="choose">File size maximum 5 MB</span>
                         <input type="file" id="identity_file" class="file_input" name="prof_of_identity[]">
+                        @if(isset($messages['prof_of_identity']))
+                            <div style="color: red">{{$messages['prof_of_identity']}}</div>
+                        @endif
                     </div>
                     <div class="col-12">
                         <a href="/" class="upload add_field_button2">Upload another document
@@ -138,13 +170,16 @@
                             driving license, national identity card, passport) or any other proof of address.
                         </p>
                     </div>
-                    <div class="choose_block input_fields_wrap col-md-5 col-xs-12">
+                    <div class="choose_block input_fields_wrap col-md-12 col-xs-12">
                         <label for="address_input">
-                            Address Verification Document
+                            Address Verification Document*
                         </label>
                         <div id="address_input" class="address_input input_placeholder">Choose File</div>
-                        <span class="choose">No file chosen</span>
+                        <span class="choose">File size maximum 5 MB</span>
                         <input type="file" id="address_file" name="prof_of_address[]" class="file_input">
+                        @if(isset($messages['prof_of_address']))
+                            <div style="color: red">{{$messages['prof_of_address']}}</div>
+                        @endif
                     </div>
                     <div class="col-12">
                         <a href="/" class="upload add_field_button">Upload another document
@@ -154,7 +189,7 @@
                 <div class="row request_col">
                     <div class="col-12">
                         <p class="title">
-                            Request Type
+                            Request Type*
                         </p>
                         <p class="text">
                             In order for us to verify your address, please upload a photo or scan of a proof of address
@@ -175,6 +210,9 @@
                             <option value="5" id="request6" class="">Right to object</option>
                             <option value="6" id="request7" class="">Other comment or question</option>
                         </select>
+                        @if(isset($messages['request_type']))
+                            <div style="color: red">{{$messages['request_type']}}</div>
+                        @endif
                     </div>
                 </div>
                 <div class="row request_col">
@@ -235,7 +273,9 @@
                             identify
                             you as the data subject.
                         </p>
+                        <p>* This is a mandatory field.</p>
                     </div>
+
                 </div>
                 <div class="row">
                     <div class="col-12 submit_col">

@@ -41,12 +41,15 @@ class TicketsController extends Controller
 //            'title'     => 'required|min:3',
 //            'body'      => 'required',
             'first_name' => 'required',
+            'last_name' => 'required',
             'country' => 'required',
             'address' => 'required',
             'zip' => 'required',
             'city' => 'required',
             'request_type' => 'required',
             'email' => 'required',
+            'prof_of_identity' => 'required|file|size:5000',
+            'prof_of_address' => 'required|file|size:5000',
             'phone' => 'required',
             'team_id' => 'nullable|exists:teams,id',
         ]);
@@ -77,7 +80,7 @@ class TicketsController extends Controller
         }
 
         if ($request->post('requester')) {
-            $ticket = Ticket::createAndNotify(request('requester'), request('title'), request('body'), request('tags'),json_encode($imageNames), json_encode($imageNamesAddress));
+            $ticket = Ticket::createAndNotify(request('requester'), request('title'), request('body'), request('tags'), json_encode($imageNames), json_encode($imageNamesAddress));
             $ticket->updateStatus(request('status'));
         }
         if (request('team_id')) {
@@ -109,7 +112,7 @@ class TicketsController extends Controller
             ]
         );
 
-        return redirect()->back();
+        return view('tickets.success');
     }
 
     public
@@ -132,4 +135,5 @@ class TicketsController extends Controller
 
         return back();
     }
+
 }

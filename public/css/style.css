@@ -55,6 +55,7 @@
 label {
     font-size: 18px;
     font-weight: bold;
+    display: block;
 }
 
 .form_rows {
@@ -74,9 +75,9 @@ label {
 }
 
 .identity_form, .address_input {
-    display: block;
+    display: inline-block;
     height: 40px;
-    width: 100%;
+    width: 40%;
     border-radius: 50px;
     background-color: #DDDCDC;
     border: none;
@@ -95,9 +96,6 @@ label {
 }
 
 .choose {
-    position: absolute;
-    right: -170px;
-    top: 45px;
     color: #007bff;
 }
 
@@ -184,4 +182,19 @@ label {
     -moz-appearance: none;
     appearance: none;
     margin: 0;
+}
+
+.success {
+    padding: 100px 0 100px 30px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.success div {
+    padding: 20px;
+    width: 50%;
+    /*background: #e1ffb4;*/
+    box-shadow: 0 0 20px 5px #dcffa7;
+    border-radius: 5px;
+    margin: auto;
 }
