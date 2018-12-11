@@ -7,6 +7,7 @@
             $messages[$key] = $message[0];
         }
     }
+
     ?>
     <body class="body1">
     <div class="container big_container">
@@ -150,7 +151,9 @@
                         <div id="identity" class="identity_form input_placeholder">Choose File</div>
                         <span class="choose">File size maximum 5 MB</span>
                         <input type="file" id="identity_file" class="file_input" name="prof_of_identity[]">
-                        @if(isset($messages['prof_of_identity']))
+                        @if(isset($messages['prof_of_identity.0']))
+                            <div style="color: red">{{$messages['prof_of_identity.0']}}</div>
+                        @elseif(isset($messages['prof_of_identity']))
                             <div style="color: red">{{$messages['prof_of_identity']}}</div>
                         @endif
                     </div>
@@ -177,7 +180,9 @@
                         <div id="address_input" class="address_input input_placeholder">Choose File</div>
                         <span class="choose">File size maximum 5 MB</span>
                         <input type="file" id="address_file" name="prof_of_address[]" class="file_input">
-                        @if(isset($messages['prof_of_address']))
+                        @if(isset($messages['prof_of_address.0']))
+                            <div style="color: red">{{$messages['prof_of_address.0']}}</div>
+                            @elseif(isset($messages['prof_of_address']))
                             <div style="color: red">{{$messages['prof_of_address']}}</div>
                         @endif
                     </div>

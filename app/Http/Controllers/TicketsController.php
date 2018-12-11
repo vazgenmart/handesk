@@ -48,11 +48,22 @@ class TicketsController extends Controller
             'city' => 'required',
             'request_type' => 'required',
             'email' => 'required',
-            'prof_of_identity' => 'required|file|size:5000',
-            'prof_of_address' => 'required|file|size:5000',
+            'prof_of_identity.*' => 'required|mimes:jpg,jpeg,png,bmp|max:5120',
+            'prof_of_address.*' => 'required|mimes:jpg,jpeg,png,bmp|max:5120',
+            'prof_of_identity' => 'required|mimes:jpg,jpeg,png,bmp|max:5120',
+            'prof_of_address' => 'required|mimes:jpg,jpeg,png,bmp|max:5120',
             'phone' => 'required',
             'team_id' => 'nullable|exists:teams,id',
-        ]);
+        ],
+            [
+                'prof_of_identity.*.required' => 'Please upload an image',
+                'prof_of_identity.*.mimes' => 'Only jpeg,png and bmp images are allowed',
+                'prof_of_identity.*.max' => 'Sorry! Maximum allowed size for an image is 5MB',
+                'prof_of_address.*.required' => 'Please upload an image',
+                'prof_of_address.*.mimes' => 'Only jpeg,png and bmp images are allowed',
+                'prof_of_address.*.max' => 'Sorry! Maximum allowed size for an image is 5MB',
+            ]);
+
         $imageNames = [];
         $imageNamesAddress = [];
 
@@ -87,7 +98,6 @@ class TicketsController extends Controller
             $ticket->assignToTeam(request('team_id'));
         }
 
-
         $tickets->create(
             [
                 'first_name' => $request->first_name,
@@ -111,6 +121,7 @@ class TicketsController extends Controller
                 'from_site' => $request->from_site,
             ]
         );
+
 
         return view('tickets.success');
     }
