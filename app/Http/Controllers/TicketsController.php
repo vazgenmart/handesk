@@ -46,6 +46,7 @@ class TicketsController extends Controller
             'address' => 'required',
             'zip' => 'required',
             'city' => 'required',
+            'request_description' => 'required',
             'request_type' => 'required',
             'email' => 'required',
             'prof_of_identity.*' => 'required|mimes:jpg,jpeg,png,bmp|max:5120',
