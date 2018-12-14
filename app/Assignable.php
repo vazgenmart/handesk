@@ -13,7 +13,11 @@ trait Assignable
             return;
         }
         $this->user()->associate($user)->save();
-        $user->notify($this->getAssignedNotification());
+        \Mail::raw('You have assigned new ticket', function($message)
+        {
+            $message->from(env('MAIL_USERNAME'), 'Laravel');
+            $message->to($this->user->email);
+        });
         TicketEvent::make($this, "Assigned to agent: {$user->name}");
     }
 
@@ -25,7 +29,7 @@ trait Assignable
         if ($this->team && $this->team->id == $team->id) {
             return;
         }
-        $this->team()->associate($team)->save();
+       // $this->team()->associate($team)->save();
         $team->notify($this->getAssignedNotification());
         TicketEvent::make($this, "Assigned to team: {$team->name}");
     }

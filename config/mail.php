@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    'host' => env('MAIL_HOST', 'smtp.gmail.com'),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@handesk.io'),
+        'address' => env('MAIL_FROM_ADDRESS', 'vazgenmart@gmail.com'),
         'name'    => env('MAIL_FROM_NAME', 'Handesk'),
     ],
 
@@ -98,13 +98,13 @@ return [
     |
     */
 
-    'sendmail' => '/usr/sbin/sendmail -bs',
+    'sendmail' => 'C:/usr/lib/sendmail.exe -t -i',
 
     'stream' => [
         'ssl' => [
             'allow_self_signed' => env('MAIL_SSLOPTIONS_ALLOW_SELF_SIGNED', false),
-            'verify_peer'       => env('MAIL_SSLOPTIONS_VERIFY_PEER', true),
-            'verify_peer_name'  => env('MAIL_SSLOPTIONS_VERIFY_PEER_NAME', true),
+            'verify_peer'       => env('MAIL_SSLOPTIONS_VERIFY_PEER', false),
+            'verify_peer_name'  => env('MAIL_SSLOPTIONS_VERIFY_PEER_NAME', false),
         ],
     ],
 
@@ -119,7 +119,7 @@ return [
     |
     */
 
-    'markdown' => [
+/*    'markdown' => [
         'theme' => 'default',
 
         'paths' => [
@@ -135,6 +135,6 @@ return [
         'replyAboveLine' => '##- Please type your reply above this line -##',
         'useSSL'         => env('MAIL_FETCH_USE_SSL', false),
         'options'        => env('MAIL_FETCH_OPTIONS', '/pop3'),
-    ],
+    ],*/
 
 ];

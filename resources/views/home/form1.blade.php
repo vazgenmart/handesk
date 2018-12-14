@@ -9,6 +9,9 @@
     }
 
     ?>
+    <head>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    </head>
     <body class="body1">
     <div class="container big_container">
         <div class="content">
@@ -82,7 +85,7 @@
                     </div>
                     <div class="col-md-5 col-xs-122">
                         <label for="phone">Phone Number*</label>
-                        <input type="text" id="phone" class="input" name="phone" min="0" @if(old('phone'))
+                        <input type="number" id="phone" class="input"  name="phone" min="0" @if(old('phone'))
                         value="{{ old('phone') }}"
                                @else
                                value=""
@@ -410,4 +413,5 @@
             $('#from_site').val(getParentUrl());
         });
     </script>
+
 @endsection
