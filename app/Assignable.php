@@ -29,8 +29,8 @@ trait Assignable
         if ($this->team && $this->team->id == $team->id) {
             return;
         }
-       // $this->team()->associate($team)->save();
-        $team->notify($this->getAssignedNotification());
+        $this->team()->associate($team)->save();
+       // $team->notify($this->getAssignedNotification());
         TicketEvent::make($this, "Assigned to team: {$team->name}");
     }
 }

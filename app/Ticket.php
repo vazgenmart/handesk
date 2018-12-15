@@ -15,6 +15,7 @@ use App\Notifications\TicketAssigned;
 use App\Notifications\TicketEscalated;
 use App\Services\TicketLanguageDetector;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use function PHPSTORM_META\type;
 
 class Ticket extends BaseModel
 {
@@ -169,17 +170,19 @@ class Ticket extends BaseModel
         if ($user && $this->isEscalated()) {
             return $this->addNote($user, $body);
         }
+
         $previousStatus = $this->updateStatusFromComment($user, $newStatus);
+
         $this->associateUserIfNecessary($user);
         if (! $body) {
             return;
         }
-
         $comment = $this->comments()->create([
             'body'       => $body,
             'user_id'    => $user ? $user->id : null,
             'new_status' => $newStatus ?: $this->status,
-        ])->notifyNewComment();
+        ]);//->notifyNewComment();
+
         event(new TicketCommented($this, $comment, $previousStatus));
 
         return $comment;
@@ -190,7 +193,7 @@ class Ticket extends BaseModel
         if (! $body) {
             return null;
         }
-        //if( ! $this->user && $user) { $this->user()->associate($user)->save(); }  //We don't want the notes to automatically assign the user
+        if( ! $this->user && $user) { $this->user()->associate($user)->save(); }  //We don't want the notes to automatically assign the user
         else {
             $this->touch();
         }
