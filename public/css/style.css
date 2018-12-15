@@ -183,7 +183,9 @@ label {
     appearance: none;
     margin: 0;
 }
-
+input[type=number] {
+    -moz-appearance:textfield;
+}
 .success {
     padding: 100px 0 100px 30px;
     font-size: 20px;
