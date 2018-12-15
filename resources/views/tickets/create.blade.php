@@ -86,7 +86,7 @@
             </tr>
             <tr>
                 <td>{{ __('ZIP-Code') }}:</td>
-                <td class="w100"><input type="number" name="zip" class="w100"></td>
+                <td class="w100"><input type="text" name="zip" class="w100"></td>
             </tr>
             <tr>
                 <td>{{ __('City') }}:</td>
