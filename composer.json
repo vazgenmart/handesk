@@ -8,6 +8,7 @@
         "php": ">=7.0.0",
         "badchoice/hurricane": "^1.0",
         "badchoice/thrust": "^0.3.7",
+        "dacastro4/laravel-gmail": "^0.6.0",
         "doctrine/dbal": "^2.8",
         "drewm/mailchimp-api": "^2.4",
         "fzaninotto/faker": "^1.4",

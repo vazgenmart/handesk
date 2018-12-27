@@ -76,4 +76,18 @@ Route::group(['middleware' => ['auth', 'userLocale']], function () {
     });
 
     Route::get('reports', 'ReportsController@index')->name('reports.index');
+
+    Route::get('/oauth/gmail', function (){
+        return LaravelGmail::redirect();
+    });
+
+    Route::get('/oauth/gmail/callback', function (){
+        LaravelGmail::makeToken();
+        return redirect()->to('/');
+    });
+
+    Route::get('/oauth/gmail/logout', function (){
+        LaravelGmail::logout(); //It returns exception if fails
+        return redirect()->to('/');
+    });
 });

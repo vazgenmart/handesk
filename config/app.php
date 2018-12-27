@@ -164,6 +164,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        Dacastro4\LaravelGmail\LaravelGmailServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -183,7 +184,6 @@ return [
         Khill\FontAwesome\Laravel\FontAwesomeServiceProvider::class,
 
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Class Aliases
@@ -230,7 +230,7 @@ return [
         'URL'          => Illuminate\Support\Facades\URL::class,
         'Validator'    => Illuminate\Support\Facades\Validator::class,
         'View'         => Illuminate\Support\Facades\View::class,
-
+        'LaravelGmail' => Dacastro4\LaravelGmail\Facade\LaravelGmail::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
     ],
