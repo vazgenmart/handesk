@@ -8,6 +8,7 @@ use App\Repositories\TicketsIndexQuery;
 use App\Repositories\TicketsRepository;
 use BadChoice\Thrust\Controllers\ThrustController;
 use Dacastro4\LaravelGmail\Facade\LaravelGmail;
+use Sunra\PhpSimple\HtmlDomParser;
 
 class TicketsController extends Controller
 {
@@ -30,7 +31,8 @@ class TicketsController extends Controller
     public function show(Ticket $ticket)
     {
         $this->authorize('view', $ticket);
-
+        $email = $ticket->email;
+        $this->gmail($email);
         return view('tickets.show', ['ticket' => $ticket]);
     }
 
@@ -148,6 +150,7 @@ class TicketsController extends Controller
             'priority' => 'required|integer',
             //'title'      => 'required|min:3',
         ]);
+
         $ticket->updateWith(request('requester'), request('priority'));
 
         return back();
@@ -155,17 +158,17 @@ class TicketsController extends Controller
 
     public function gmail($mail)
     {
+
         $messages = LaravelGmail::message()
-            ->from('vazgenmart@gmail.com')
+            ->from($mail)
             ->unread()
             ->in('INBOX')
             ->preload()
             ->all();
-        foreach ($messages as $message) {
+        foreach ($messages as $key => $message) {
             $messages[] = $message;
-            $body[] = $message->getPlainTextBody();
+            $body[] = $message->getHtmlBody();
             $subjects[] = $message->getSubject();
-
         }
 
         if (isset($subjects)) {
@@ -179,15 +182,19 @@ class TicketsController extends Controller
                     $ticket_object[$ticket_numb] = Ticket::where('id', $ticket_numb)->first();
                 }
                 $email = new Mail();
-                if(isset($ticket_object[$ticket_numb])){
+                if (isset($ticket_object[$ticket_numb])) {
                     $email->ticket_id = $ticket_object[$ticket_numb]->id;
                 }
-
                 $email->from = $mail;
                 $email->subject = $subject;
-                $email->text = $body[$key];
-                $email->save();
-                $messages[$key]->markAsRead();
+                $email->text = HTMLDomParser::str_get_html($body[$key])->find('div')[0]->text();
+                if ($email->save()) {
+                    if (intval($ticket_numb) != 0) {
+                        $model = new Ticket();
+                        $comment = $model->addCommentFromEmail($email->text, $ticket_numb);
+                    }
+                    $messages[$key]->markAsRead();
+                }
             }
         }
     }
