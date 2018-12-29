@@ -18,11 +18,13 @@ class CommentsController extends Controller
             $comment = $ticket->addNote(auth()->user(), request('body'));
         } else {
             $comment = $ticket->addComment(auth()->user(), request('body'), request('new_status'));
-            $message = $comment->body;
-            Mail::raw($message, function ($mes) use ($ticket) {
-                $mes->from(env('MAIL_USERNAME'));
-                $mes->to($ticket->email)->subject('Ticket#' . $ticket->id);
-            });
+            if ($comment) {
+                $message = $comment->body;
+                Mail::raw($message, function ($mes) use ($ticket) {
+                    $mes->from(env('MAIL_USERNAME'));
+                    $mes->to($ticket->email)->subject('Ticket#' . $ticket->id);
+                });
+            }
         }
         if ($comment && request()->hasFile('attachment')) {
             Attachment::storeAttachmentFromRequest(request(), $comment);

@@ -189,7 +189,7 @@ class TicketsController extends Controller
                 $email->subject = $subject;
                 $email->text = HTMLDomParser::str_get_html($body[$key])->find('div')[0]->text();
                 if ($email->save()) {
-                    if (intval($ticket_numb) != 0) {
+                    if (isset($ticket_object[$ticket_numb]) && intval($ticket_numb) != 0) {
                         $model = new Ticket();
                         $comment = $model->addCommentFromEmail($email->text, $ticket_numb);
                     }
