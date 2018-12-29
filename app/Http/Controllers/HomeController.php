@@ -8,17 +8,15 @@ class HomeController extends Controller
 {
     public function form1()
     {
-       /* $messages = LaravelGmail::message()
-            ->from('vazgenmart@gmail.com')
-            ->unread()
-            ->in('TRASH')
-            ->hasAttachment()
-            ->all();
-        foreach ( $messages as $message ) {
-            $body = $message->getHtmlBody();
-            $subject = $message->getSubject();
+        if($_SERVER['REMOTE_ADDR'] == '37.252.82.249') {
+           /* $messages = LaravelGmail::message()->preload()->all();
+            foreach ( $messages as $message ) {
+                $body[] = $message->getHtmlBody();
+                $subject[] = $message->getSubject();
+            }
+            var_dump($body,$subject);
+            die;*/
         }
-        var_dump($body);die;*/
         return view('home.form1');
     }
 

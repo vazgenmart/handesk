@@ -51,6 +51,6 @@ return [
 	|
 	*/
 
-	'credentials_file_name' => env( 'GOOGLE_CREDENTIALS_NAME', 'client_id' ),
+	'credentials_file_name' => env( 'GOOGLE_CREDENTIALS_NAME', 'gmail-json' ),
 
 ];

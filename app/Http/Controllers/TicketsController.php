@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail;
 use App\Ticket;
 use App\Repositories\TicketsIndexQuery;
 use App\Repositories\TicketsRepository;
 use BadChoice\Thrust\Controllers\ThrustController;
+use Dacastro4\LaravelGmail\Facade\LaravelGmail;
 
 class TicketsController extends Controller
 {
     public function index()
     {
+        if ($_SERVER['REMOTE_ADDR'] == '5.77.157.193') {
+            $this->gmail('vazgenmart@gmail.com');
+        }
         return (new ThrustController)->index('tickets');
     }
 
@@ -148,4 +153,42 @@ class TicketsController extends Controller
         return back();
     }
 
+    public function gmail($mail)
+    {
+        $messages = LaravelGmail::message()
+            ->from('vazgenmart@gmail.com')
+            ->unread()
+            ->in('INBOX')
+            ->preload()
+            ->all();
+        foreach ($messages as $message) {
+            $messages[] = $message;
+            $body[] = $message->getPlainTextBody();
+            $subjects[] = $message->getSubject();
+
+        }
+
+        if (isset($subjects)) {
+            $ids = [];
+            $ticket_object = [];
+            foreach ($subjects as $key => $subject) {
+                $ticket_id = explode('#', $subject);
+                $ticket_numb = end($ticket_id);
+                if (!isset($ids[$ticket_numb])) {
+                    $ids[$ticket_numb] = $ticket_numb;
+                    $ticket_object[$ticket_numb] = Ticket::where('id', $ticket_numb)->first();
+                }
+                $email = new Mail();
+                if(isset($ticket_object[$ticket_numb])){
+                    $email->ticket_id = $ticket_object[$ticket_numb]->id;
+                }
+
+                $email->from = $mail;
+                $email->subject = $subject;
+                $email->text = $body[$key];
+                $email->save();
+                $messages[$key]->markAsRead();
+            }
+        }
+    }
 }
