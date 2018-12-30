@@ -27,8 +27,25 @@ Route::group(['prefix' => 'requester'], function () {
 });
 
 Route::post('webhook/bitbucket', 'WebhookController@store');
+Route::get('storage/attachments/{filename}', function ($filename)
+{
+    $path = storage_path('app/public/attachments/' . $filename);
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+
+    return $response;
+});
 
 Route::group(['middleware' => ['auth', 'userLocale']], function () {
+
     Route::get('profile', 'ProfileController@show')->name('profile.show');
     Route::put('profile', 'ProfileController@update')->name('profile.update');
     Route::get('request/show', 'RequestController@show')->name('request.show');

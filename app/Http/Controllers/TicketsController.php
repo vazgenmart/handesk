@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Attachment;
 use App\Mail;
 use App\Ticket;
 use App\Repositories\TicketsIndexQuery;
@@ -169,9 +170,11 @@ class TicketsController extends Controller
             $messages[] = $message;
             $body[] = $message->getHtmlBody();
             $subjects[] = $message->getSubject();
+            $attachments[] = $message->getAttachments();
         }
 
         if (isset($subjects)) {
+
             $ids = [];
             $ticket_object = [];
             foreach ($subjects as $key => $subject) {
@@ -192,6 +195,18 @@ class TicketsController extends Controller
                     if (isset($ticket_object[$ticket_numb]) && intval($ticket_numb) != 0) {
                         $model = new Ticket();
                         $comment = $model->addCommentFromEmail($email->text, $ticket_numb);
+                        if ($attachments[$key]) {
+                            foreach ($attachments[$key] as $attachment) {
+                                $attach = new Attachment();
+                                $attach->path = $attachment->getFileName();
+                                $attach->attachable_type = 'App\Comment';
+                                $attach->attachable_id = $comment->id;
+
+                                $attach->save();
+                                $attachment->saveAttachmentTo('public/attachments/');
+
+                            }
+                        }
                     }
                     $messages[$key]->markAsRead();
                 }

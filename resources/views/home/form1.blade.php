@@ -13,12 +13,6 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
     </head>
     <body class="body1">
-    <h1>{{ LaravelGmail::user() }}</h1>
-    @if(LaravelGmail::check())
-        <a href="{{ url('oauth/gmail/logout') }}">logout</a>
-    @else
-        <a href="{{ url('oauth/gmail') }}">loging</a>
-    @endif
 
     <div class="container big_container">
         <div class="content">
