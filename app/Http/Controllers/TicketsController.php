@@ -32,6 +32,7 @@ class TicketsController extends Controller
     public function show(Ticket $ticket)
     {
         $this->authorize('view', $ticket);
+//        var_dump($ticket);die;
         $email = $ticket->email;
         $this->gmail($email);
         return view('tickets.show', ['ticket' => $ticket]);
@@ -66,10 +67,10 @@ class TicketsController extends Controller
         ],
             [
                 'prof_of_identity.*.required' => 'Please upload an image',
-                'prof_of_identity.*.mimes' => 'Only jpeg,png and bmp images are allowed',
+                'prof_of_identity.*.mimes' => 'Only jpeg,png,pdf and bmp images are allowed',
                 'prof_of_identity.*.max' => 'Sorry! Maximum allowed size for an image is 5MB',
                 'prof_of_address.*.required' => 'Please upload an image',
-                'prof_of_address.*.mimes' => 'Only jpeg,png and bmp images are allowed',
+                'prof_of_address.*.mimes' => 'Only jpeg,png,pdf and bmp images are allowed',
                 'prof_of_address.*.max' => 'Sorry! Maximum allowed size for an image is 5MB',
             ]);
 
