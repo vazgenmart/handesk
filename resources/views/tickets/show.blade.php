@@ -148,13 +148,17 @@
         <tr>
             <th scope="row" style="font-weight: bold">Prof of Identity</th>
             @foreach($identity as $path)
-                <td colspan="2"><img src="/images/{{$path}}" alt="prof_of_identity" width="50%"></td>
+                <td colspan="2">
+                    <object data="/images/{{$path}}" type="" width="80%"></object>
+                </td>
             @endforeach
         </tr>
         <tr>
             <th scope="row" style="font-weight: bold">Prof of Address</th>
             @foreach($address as $path)
-                <td colspan="2"><img src="/images/{{$path}}" alt="prof_of_address" width="50%"></td>
+                <td colspan="2">
+                    <object data="/images/{{$path}}" type="" width="80%"></object>
+                </td>
             @endforeach
         </tr>
         </tbody>

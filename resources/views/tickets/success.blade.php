@@ -5,7 +5,7 @@
 
     <div>
         <img src="images/success.png" alt="" width="10%"> <br>
-        Dear Sir or Madam!<br>
+        <span style="font-size: 24px">Dear Sir or Madam!</span><br>
 
         Thank you for submitting the form. <br>
 
