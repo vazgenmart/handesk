@@ -6,8 +6,8 @@
         </div>
     @else
         <div class="mt4">
-            @include('components.ticket.idea')
-            @include('components.ticket.issue')
+            {{--@include('components.ticket.idea')--}}
+            {{--@include('components.ticket.issue')--}}
             @include('components.ticket.escalate')
         </div>
     @endif

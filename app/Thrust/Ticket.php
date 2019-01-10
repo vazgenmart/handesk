@@ -16,6 +16,7 @@ use App\ThrustHelpers\Actions\ChangePriority;
 use App\ThrustHelpers\Filters\PriorityFilter;
 use App\ThrustHelpers\Filters\EscalatedFilter;
 use App\ThrustHelpers\Fields\TicketStatusField;
+use App\Ticket as Tickets;
 
 class Ticket extends Resource
 {
@@ -30,7 +31,7 @@ class Ticket extends Resource
             //Gravatar::make('requester.email')->withDefault('https://raw.githubusercontent.com/BadChoice/handesk/master/public/images/default-avatar.png'),
             TicketStatusField::make('id', ''),
             Link::make('title', __('ticket.subject'))->displayCallback(function ($ticket) {
-                return "#{$ticket->id} · ".str_limit($ticket->title, 25);
+                return "#{$ticket->id} · ".str_limit(Tickets::REQUEST_TYPE[$ticket->request_type], 25);
             })->route('tickets.show')->sortable(),
             Link::make('requester.id', trans_choice('ticket.requester', 1))->displayCallback(function ($ticket) {
                 return $ticket->requester->name ?? '--';
