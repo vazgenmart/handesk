@@ -103,8 +103,10 @@ class TicketsController extends Controller
         if ($request->post('requester')) {
             $ticket = Ticket::createAndNotify(request('requester'), request('title'), request('body'), request('tags'), json_encode($imageNames), json_encode($imageNamesAddress));
             $ticket->updateStatus(request('status'));
+            return view('tickets.show',['ticket' => $ticket]);
         }
         if (request('team_id')) {
+            $ticket = Ticket::createAndNotify(request('requester'), request('title'), request('body'), request('tags'), json_encode($imageNames), json_encode($imageNamesAddress));
             $ticket->assignToTeam(request('team_id'));
         }
 

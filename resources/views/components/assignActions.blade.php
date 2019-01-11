@@ -1,4 +1,3 @@
-
 <div class="description actions comment">
     {{ Form::open(["url" => route("{$endpoint}.assign", $object)]) }}
 
@@ -12,7 +11,6 @@
         @endcan
         <tr>
             @can("assignToTeam", $object)
-<!--                --><?php //var_dump($object);die;?>
                 <td>{{ __('ticket.assigned') }}:</td>
                 <td>{{ Form::select('user_id', App\Team::membersByTeam(), $object->user_id, ['class' => 'w100']) }}</td>
             @else

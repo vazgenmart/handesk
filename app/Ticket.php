@@ -59,10 +59,10 @@ class Ticket extends BaseModel
             'prof_of_address' => $imageNames,
         ])->attachTags($tags);
 
-        tap(new TicketCreated($ticket), function ($newTicketNotification) use ($requester) {
-            Admin::notifyAll($newTicketNotification);
-            $requester->notify($newTicketNotification);
-        });
+//        tap(new TicketCreated($ticket), function ($newTicketNotification) use ($requester) {
+//            Admin::notifyAll($newTicketNotification);
+//            $requester->notify($newTicketNotification);
+//        });
 
         return $ticket;
     }
