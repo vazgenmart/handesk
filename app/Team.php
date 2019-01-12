@@ -62,9 +62,14 @@ class Team extends BaseModel
 
     public static function membersByTeam()
     {
-        $usersWithoutTeam = User::has('teams', '<', 1)->pluck('name', 'id')->toArray();
+        $user = User::where('admin', '1')->get();
+        if ($user) {
+            $usersWithoutTeam = User::has('teams', '>', 0)->pluck('name', 'id')->toArray();
+        } else {
+            $usersWithoutTeam = User::has('teams', '<', 1)->pluck('name', 'id')->toArray();
+        }
         return [__('team.none') => [null => '--'] + $usersWithoutTeam] + self::all()->mapWithKeys(function ($team) {
-            return [$team->name => $team->members->pluck('name', 'id')->toArray()];
-        })->toArray();
+                return [$team->name => $team->members->pluck('name', 'id')->toArray()];
+            })->toArray();
     }
 }

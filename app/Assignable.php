@@ -15,7 +15,7 @@ trait Assignable
         $this->user()->associate($user)->save();
         \Mail::raw('You have assigned new ticket', function($message)
         {
-            $message->from(env('MAIL_USERNAME'), 'Laravel');
+            $message->from(env('MAIL_USERNAME'), 'ticket@dg-datenschutz.de');
             $message->to($this->user->email);
         });
         TicketEvent::make($this, "Assigned to agent: {$user->name}");
