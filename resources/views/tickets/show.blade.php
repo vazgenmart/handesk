@@ -36,6 +36,9 @@
             @if($ticket->requester)
                 <input name="requester[name]" value="{{$ticket->requester->name }}">
                 <input name="requester[email]" value="{{$ticket->requester->email}}">
+                @else
+                <input name="first_name" value="{{$ticket->first_name }}">
+                <input name="email" value="{{$ticket->email}}">
             @endif
             <button> {{ __("ticket.update")}} </button>
             {{ Form::close() }}

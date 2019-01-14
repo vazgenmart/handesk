@@ -150,7 +150,7 @@ class TicketsController extends Controller
     function update(Ticket $ticket)
     {
         $this->validate(request(), [
-            'requester' => 'required|array',
+//            'requester' => 'required|array',
             'priority' => 'required|integer',
             //'title'      => 'required|min:3',
         ]);

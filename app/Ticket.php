@@ -219,7 +219,7 @@ class Ticket extends BaseModel
             'user_id' => $user->id,
             'new_status' => $this->status,
             'private' => true,
-        ])->notifyNewNote();
+        ]);//->notifyNewNote();
     }
 
     public function merge($user, $tickets)
