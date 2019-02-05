@@ -36,7 +36,7 @@
             @if($ticket->requester)
                 <input name="requester[name]" value="{{$ticket->requester->name }}">
                 <input name="requester[email]" value="{{$ticket->requester->email}}">
-                @else
+            @else
                 <input name="first_name" value="{{$ticket->first_name }}">
                 <input name="email" value="{{$ticket->email}}">
             @endif
@@ -153,6 +153,9 @@
             @foreach($identity as $path)
                 <td colspan="2">
                     <object data="/images/{{$path}}" type="" width="80%"></object>
+                    <a href="/images/{{$path}}" class="pop" target="_blank">
+                        Open in new window
+                    </a>
                 </td>
             @endforeach
         </tr>
@@ -161,6 +164,9 @@
             @foreach($address as $path)
                 <td colspan="2">
                     <object data="/images/{{$path}}" type="" width="80%"></object>
+                    <a href="/images/{{$path}}" class="pop" target="_blank">
+                        Open in new window
+                    </a>
                 </td>
             @endforeach
         </tr>
@@ -185,6 +191,5 @@
             },
             users: {!! json_encode(App\Services\Mentions::arrayFor(auth()->user())) !!}
         });
-
     </script>
 @endsection
