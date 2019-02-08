@@ -10,29 +10,25 @@ use App\Repositories\TicketsRepository;
 use BadChoice\Thrust\Controllers\ThrustController;
 use Dacastro4\LaravelGmail\Facade\LaravelGmail;
 use Sunra\PhpSimple\HtmlDomParser;
+use Mail as Mailing;
+
 
 class TicketsController extends Controller
 {
     public function index()
     {
-        if ($_SERVER['REMOTE_ADDR'] == '5.77.157.193') {
-            $this->gmail('vazgenmart@gmail.com');
+        $ticket = Ticket::where('status', [1, 2])->get();
+        foreach ($ticket as $mail) {
+            $email = $mail->email;
+            $this->gmail($email);
         }
         return (new ThrustController)->index('tickets');
     }
 
-    /*public function index(TicketsRepository $repository)
-    {
-        $ticketsQuery = TicketsIndexQuery::get($repository);
-        $ticketsQuery = $ticketsQuery->select('tickets.*')->latest('updated_at');
-
-        return view('tickets.index', ['tickets' => $ticketsQuery->paginate(25, ['tickets.user_id'])]);
-    }*/
 
     public function show(Ticket $ticket)
     {
         $this->authorize('view', $ticket);
-//        var_dump($ticket);die;
         $email = $ticket->email;
         $this->gmail($email);
         return view('tickets.show', ['ticket' => $ticket]);
@@ -103,7 +99,7 @@ class TicketsController extends Controller
         if ($request->post('requester')) {
             $ticket = Ticket::createAndNotify(request('requester'), request('title'), request('body'), request('tags'), json_encode($imageNames), json_encode($imageNamesAddress));
             $ticket->updateStatus(request('status'));
-            return view('tickets.show',['ticket' => $ticket]);
+            return view('tickets.show', ['ticket' => $ticket]);
         }
         if (request('team_id')) {
             $ticket = Ticket::createAndNotify(request('requester'), request('title'), request('body'), request('tags'), json_encode($imageNames), json_encode($imageNamesAddress));
@@ -183,9 +179,10 @@ class TicketsController extends Controller
             foreach ($subjects as $key => $subject) {
                 $ticket_id = explode('#', $subject);
                 $ticket_numb = end($ticket_id);
+                $ticket = Ticket::where('id', $ticket_numb)->first();
                 if (!isset($ids[$ticket_numb])) {
                     $ids[$ticket_numb] = $ticket_numb;
-                    $ticket_object[$ticket_numb] = Ticket::where('id', $ticket_numb)->first();
+                    $ticket_object[$ticket_numb] = $ticket;
                 }
                 $email = new Mail();
                 if (isset($ticket_object[$ticket_numb])) {
@@ -210,10 +207,26 @@ class TicketsController extends Controller
 
                             }
                         }
+                        $path = '';
+                        if ($comment) {
+                            if ($comment && request()->hasFile('attachment')) {
+                                $path = Attachment::storeAttachmentFromRequest(request(), $comment);
+                            }
+                            $message = $comment->body;
+                            Mailing::raw($message, function ($mes) use ($ticket, $comment, $path) {
+                                $mes->from(env('MAIL_USERNAME'));
+                                $mes->to($ticket->user->email)->subject('Ticket#' . $ticket->id . ' You have a new Comment! ' . date("Y.m.d"));
+                                if ($comment && request()->hasFile('attachment')) {
+                                    $mes->attach(storage_path('app/public/attachments/' . $path));
+                                }
+                            });
+
+                        }
                     }
                     $messages[$key]->markAsRead();
                 }
             }
         }
     }
+
 }

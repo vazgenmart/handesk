@@ -11,7 +11,8 @@ class CommentsController extends Controller
 {
     public function store(Ticket $ticket)
     {
-
+//        var_dump($ticket);
+//        die;
         $this->authorize('view', $ticket);
         $path = '';
         if (request('private')) {
@@ -19,12 +20,12 @@ class CommentsController extends Controller
         } else {
             $comment = $ticket->addComment(auth()->user(), request('body'), request('new_status'));
             if ($comment && request()->hasFile('attachment')) {
-               $path =  Attachment::storeAttachmentFromRequest(request(), $comment);
+                $path = Attachment::storeAttachmentFromRequest(request(), $comment);
 
             }
             if ($comment) {
                 $message = $comment->body;
-                Mail::raw($message, function ($mes) use ($ticket,$comment,$path) {
+                Mail::raw($message, function ($mes) use ($ticket, $comment, $path) {
                     $mes->from(env('MAIL_USERNAME'));
                     $mes->to($ticket->email)->subject('Ticket#' . $ticket->id);
                     if ($comment && request()->hasFile('attachment')) {

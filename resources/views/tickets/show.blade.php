@@ -60,9 +60,9 @@
             @if($ticket->isEscalated() )
                 <button class="mt1 uppercase ph3"> @icon(comment) {{ __('ticket.note') }} </button>
             @else
-                <div class="mb1">
-                    {{ __('ticket.note') }}: {{ Form::checkbox('private') }}
-                </div>
+                {{--<div class="mb1">--}}
+                    {{--{{ __('ticket.note') }}: {{ Form::checkbox('private') }}--}}
+                {{--</div>--}}
                 <button class="mt1 uppercase ph3">
                     @icon(comment) {{ __('ticket.commentAs') }} {{ $ticket->statusName() }}</button>
                 <span class="dropdown button caret-down"> @icon(caret-down) </span>
