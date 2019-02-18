@@ -215,7 +215,7 @@ class TicketsController extends Controller
                             $message = $comment->body;
                             Mailing::raw($message, function ($mes) use ($ticket, $comment, $path) {
                                 $mes->from(env('MAIL_USERNAME'));
-                                $mes->to($ticket->user->email)->subject('Ticket#' . $ticket->id . ' You have a new Comment! ' . date("Y.m.d"));
+                                $mes->to($ticket->user->email)->subject('Ticket#' . $ticket->id . ' You have a new Comment! ');
                                 if ($comment && request()->hasFile('attachment')) {
                                     $mes->attach(storage_path('app/public/attachments/' . $path));
                                 }

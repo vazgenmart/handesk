@@ -13,7 +13,8 @@ trait Assignable
             return;
         }
         $this->user()->associate($user)->save();
-        \Mail::raw('You have assigned new ticket ' . date("Y.m.d"), function ($message) use ($ticket) {
+        date_default_timezone_set('Europe/Berlin');
+        \Mail::raw($user->name . 'has assigned you ticket #' . $ticket->id . ' ' . date('Y.m.d H:i'), function ($message) use ($ticket) {
             $message->from(env('MAIL_USERNAME'), 'ticket@dg-datenschutz.de');
             $message->to($this->user->email);
             $message->subject('Assigned ticket #' . $ticket->id);

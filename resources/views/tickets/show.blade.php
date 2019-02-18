@@ -152,7 +152,7 @@
             <th scope="row" style="font-weight: bold">Prof of Identity</th>
             @foreach($identity as $path)
                 <td colspan="2">
-                    <object data="/images/{{$path}}" type="" width="80%"></object>
+                    <object data="/images/{{$path}}" type="" width="600px" height="400px"></object>
                     <a href="/images/{{$path}}" class="pop" target="_blank">
                         Open in new window
                     </a>
@@ -163,7 +163,7 @@
             <th scope="row" style="font-weight: bold">Prof of Address</th>
             @foreach($address as $path)
                 <td colspan="2">
-                    <object data="/images/{{$path}}" type="" width="80%"></object>
+                    <object data="/images/{{$path}}" type="" width="600px" height="400px"></object>
                     <a href="/images/{{$path}}" class="pop" target="_blank">
                         Open in new window
                     </a>
