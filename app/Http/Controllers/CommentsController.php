@@ -23,11 +23,25 @@ class CommentsController extends Controller
                 $path = Attachment::storeAttachmentFromRequest(request(), $comment);
 
             }
+//            echo '<pre>';
+//            var_dump($ticket->user->email);die;
             if ($comment) {
                 $message = $comment->body;
                 Mail::raw($message, function ($mes) use ($ticket, $comment, $path) {
                     $mes->from(env('MAIL_USERNAME'));
                     $mes->to($ticket->email)->subject('Ticket#' . $ticket->id);
+                    if ($comment && request()->hasFile('attachment')) {
+                        $mes->attach(storage_path('app/public/attachments/' . $path));
+                    }
+                });
+            }
+
+            if ($comment && $comment->user->admin == 1){
+                $message = $comment->body;
+                date_default_timezone_set('Europe/Berlin');
+                Mail::raw( $comment->user->name.' commented on '. date('Y.m.d H:i').' on Ticket#' . $ticket->id.': '.'" ' .$message. ' "', function ($mes) use ($ticket, $comment, $path) {
+                    $mes->from(env('MAIL_USERNAME'));
+                    $mes->to($ticket->user->email)->subject('Ticket#' . $ticket->id . ' You have a new Comment! ');
                     if ($comment && request()->hasFile('attachment')) {
                         $mes->attach(storage_path('app/public/attachments/' . $path));
                     }

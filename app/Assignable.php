@@ -1,6 +1,6 @@
 <?php
-
 namespace App;
+
 
 trait Assignable
 {
@@ -12,9 +12,10 @@ trait Assignable
         if ($this->user && $this->user->id == $user->id) {
             return;
         }
+        $admin = auth()->user()->name;
         $this->user()->associate($user)->save();
-        date_default_timezone_set('Europe/Berlin');
-        \Mail::raw($user->name . 'has assigned you ticket #' . $ticket->id . ' ' . date('Y.m.d H:i'), function ($message) use ($ticket) {
+//        date_default_timezone_set('Europe/Berlin');
+        \Mail::raw($admin . ' has assigned you ticket #' . $ticket->id . ' ' . date('Y.m.d H:i'), function ($message) use ($ticket) {
             $message->from(env('MAIL_USERNAME'), 'ticket@dg-datenschutz.de');
             $message->to($this->user->email);
             $message->subject('Assigned ticket #' . $ticket->id);

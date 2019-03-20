@@ -17,11 +17,11 @@ class TicketsController extends Controller
 {
     public function index()
     {
-        $ticket = Ticket::where('status', [1, 2])->get();
-        foreach ($ticket as $mail) {
-            $email = $mail->email;
-            $this->gmail($email);
-        }
+//        $ticket = Ticket::where('status', [1, 2])->get();
+//        foreach ($ticket as $mail) {
+//            $email = $mail->email;
+//            $this->gmail($email);
+//        }
         return (new ThrustController)->index('tickets');
     }
 
@@ -179,7 +179,13 @@ class TicketsController extends Controller
             foreach ($subjects as $key => $subject) {
                 $ticket_id = explode('#', $subject);
                 $ticket_numb = end($ticket_id);
-                $ticket = Ticket::where('id', $ticket_numb)->first();
+                $ticket_numb = intval($ticket_numb);
+                $ticket = Ticket::where('id', $ticket_numb)->where('email',$mail)->first();
+
+                if(!$ticket){
+                  continue;
+                }
+
                 if (!isset($ids[$ticket_numb])) {
                     $ids[$ticket_numb] = $ticket_numb;
                     $ticket_object[$ticket_numb] = $ticket;
@@ -212,8 +218,11 @@ class TicketsController extends Controller
                             if ($comment && request()->hasFile('attachment')) {
                                 $path = Attachment::storeAttachmentFromRequest(request(), $comment);
                             }
+//                            echo '<pre>';
+//                            var_dump($ticket->first_name);die;
                             $message = $comment->body;
-                            Mailing::raw($message, function ($mes) use ($ticket, $comment, $path) {
+                            date_default_timezone_set('Europe/Berlin');
+                            Mailing::raw($ticket->first_name.' '.$ticket->last_name .' commented on '. date('Y.m.d H:i').' on Ticket#' . $ticket->id.': '.'" ' .$message . ' "', function ($mes) use ($ticket, $comment, $path) {
                                 $mes->from(env('MAIL_USERNAME'));
                                 $mes->to($ticket->user->email)->subject('Ticket#' . $ticket->id . ' You have a new Comment! ');
                                 if ($comment && request()->hasFile('attachment')) {

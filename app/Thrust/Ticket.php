@@ -20,10 +20,11 @@ use App\Ticket as Tickets;
 
 class Ticket extends Resource
 {
-    public static $model        = \App\Ticket::class;
-    public static $search       = ['title', 'body'];
-    public static $defaultSort  = 'updated_at';
-    public static $defaultOrder = 'desc';
+    public static $model = \App\Ticket::class;
+    public static $search = ['tickets.request_type', 'tickets.requester_id', 'tickets.team_id', 'users.name', 'tickets.id'];
+    public static $defaultSort = 'tickets.updated_at';
+    public static $defaultOrder = 'tickets.desc';
+    public static $request_type = ['Right of access by the data subject', ' Right to rectification', 'Right to erasure (‘right to be forgotten’)', ' Right to restriction of processing', 'Right to data portability', 'Right to object', 'Other comment or question'];
 
     public function fields()
     {
@@ -31,7 +32,7 @@ class Ticket extends Resource
             //Gravatar::make('requester.email')->withDefault('https://raw.githubusercontent.com/BadChoice/handesk/master/public/images/default-avatar.png'),
             TicketStatusField::make('id', ''),
             Link::make('title', __('ticket.subject'))->displayCallback(function ($ticket) {
-                return "#{$ticket->id} · ".str_limit(Tickets::REQUEST_TYPE[$ticket->request_type], 25);
+                return "#{$ticket->id} · " . $ticket->request_type;
             })->route('tickets.show')->sortable(),
             Link::make('requester.id', trans_choice('ticket.requester', 1))->displayCallback(function ($ticket) {
                 return $ticket->requester->name ?? '--';
@@ -50,7 +51,11 @@ class Ticket extends Resource
 
     protected function getBaseQuery()
     {
-        return TicketsIndexQuery::get()->with($this->getWithFields());
+        return TicketsIndexQuery::get()->
+        select('tickets.id as id', 'request_type', 'requester_id', 'team_id', 'user_id', 'tickets.created_at as created_at', 'tickets.updated_at as updated_at', 'status', 'priority')->
+        leftjoin('users', 'users.id', '=', 'tickets.user_id')->
+        leftjoin('teams', 'teams.id', '=', 'tickets.team_id')->
+        leftjoin('requesters', 'requesters.id', '=', 'tickets.requester_id')->with($this->getWithFields());
     }
 
     public function update($id, $newData)
@@ -79,7 +84,8 @@ class Ticket extends Resource
         return [
             new StatusFilter,
             new PriorityFilter,
-            new EscalatedFilter,
+//            new EscalatedFilter,
         ];
     }
+
 }
