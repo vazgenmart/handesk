@@ -86,7 +86,7 @@
                     </div>
                     <div class="col-md-5 col-xs-122">
                         <label for="phone">Phone Number*</label>
-                        <input type="number" id="phone" class="input"  name="phone" min="0" @if(old('phone'))
+                        <input type="number" id="phone" class="input" name="phone" min="0" @if(old('phone'))
                         value="{{ old('phone') }}"
                                @else
                                value=""
@@ -291,28 +291,15 @@
                     <div class="col-md-5 col-xs-12">
                         <select id="request" name="request_type" title="Request Type" aria-required="true"
                                 class="input">
+                            <?php $types = \App\Thrust\Ticket::$request_type?>
                             <option value="">Please select...</option>
-                            <option value="0" {{ old('request_type') === '0' ? 'selected' : '' }} id="request1"
-                                    class="">Right of access by the data subject
-                            </option>
-                            <option value="1" {{ old('request_type') == 1 ? 'selected' : '' }} id="request2" class="">
-                                Right to rectification
-                            </option>
-                            <option value="2" {{ old('request_type') == 2 ? 'selected' : '' }} id="request3" class="">
-                                Right to erasure (‘right to be forgotten’)
-                            </option>
-                            <option value="3" {{ old('request_type') == 3 ? 'selected' : '' }} id="request4" class="">
-                                Right to restriction of processing
-                            </option>
-                            <option value="4" {{ old('request_type') == 4 ? 'selected' : '' }} id="request5" class="">
-                                Right to data portability
-                            </option>
-                            <option value="5" {{ old('request_type') == 5 ? 'selected' : '' }} id="request6" class="">
-                                Right to object
-                            </option>
-                            <option value="6" {{ old('request_type') == 6 ? 'selected' : '' }} id="request7" class="">
-                                Other comment or question
-                            </option>
+                            @foreach($types as $key => $type)
+                                <option value="{{$type}}"
+                                        {{ old('request_type') == $type ? 'selected' : '' }} id="request1"
+                                        class="">{{$type}}
+                                </option>
+
+                            @endforeach
                         </select>
                         @if(isset($messages['request_type']))
                             <div style="color: red">{{$messages['request_type']}}</div>
