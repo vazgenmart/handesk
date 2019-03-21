@@ -4,12 +4,12 @@
     </div>
     <img src="{{ url("/images/handesk_small.png") }}">
     @include('layouts.sidebar.tickets')
-    @if (config('handesk.leads'))
-        @include('layouts.sidebar.leads')
-    @endif
-    @if (config('handesk.roadmap'))
-        @include('layouts.sidebar.roadmap')
-    @endif
+    {{--@if (config('handesk.leads'))--}}
+    {{--@include('layouts.sidebar.leads')--}}
+    {{--@endif--}}
+    {{--@if (config('handesk.roadmap'))--}}
+    {{--@include('layouts.sidebar.roadmap')--}}
+    {{--@endif--}}
 
 
     <h4> @icon(bar-chart) {{ trans_choice('report.report', 2) }}</h4>
@@ -23,7 +23,7 @@
         @include('components.sidebarItem', ["url" => route('teams.index'),      "title" => trans_choice('team.team',        2) ])
         @if(auth()->user()->admin)
             @include('components.sidebarItem', ["url" => route('users.index'),      "title" => trans_choice('ticket.user',      2) ])
-            @include('components.sidebarItem', ["url" => route('settings.edit', 1), "title" => trans_choice('setting.setting',  2) ])
+            {{--@include('components.sidebarItem', ["url" => route('settings.edit', 1), "title" => trans_choice('setting.setting',  2) ])--}}
         @endif
     </ul>
     <br>
