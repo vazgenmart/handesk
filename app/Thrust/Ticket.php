@@ -52,7 +52,7 @@ class Ticket extends Resource
     protected function getBaseQuery()
     {
         return TicketsIndexQuery::get()->
-        select('tickets.id as id', 'request_type', 'requester_id', 'team_id', 'user_id', 'tickets.created_at as created_at', 'tickets.updated_at as updated_at', 'status', 'priority')->
+        select('tickets.id as id', 'request_type', 'requester_id', 'tickets.team_id', 'tickets.user_id', 'tickets.created_at as created_at', 'tickets.updated_at as updated_at', 'tickets.status', 'tickets.priority')->
         leftjoin('users', 'users.id', '=', 'tickets.user_id')->
         leftjoin('teams', 'teams.id', '=', 'tickets.team_id')->
         leftjoin('requesters', 'requesters.id', '=', 'tickets.requester_id')->with($this->getWithFields());
