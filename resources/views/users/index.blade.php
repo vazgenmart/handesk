@@ -12,6 +12,8 @@
             <th> {{ trans_choice('team.name',1) }}      </th>
             <th> {{ trans_choice('team.email',2) }}     </th>
             <th> {{ trans_choice('team.team',2) }}      </th>
+            <th> Login as</th>
+            <th> Delete Agent</th>
             <th colspan="2"></th>
         </tr>
         </thead>
@@ -22,8 +24,8 @@
                 <td> {{ $user->name }}</td>
                 <td> {{ $user->email }}</td>
                 <td> {{ implode(", ", $user->teams->pluck('name')->toArray() ) }}</td>
-                <td> <a href="{{ route('users.impersonate', $user) }}"> @icon(key) </a></td>
-                <td> <a href="{{ route('users.destroy', $user) }}" class="delete-resource"> @icon(trash)</a></td>
+                <td><a href="{{ route('users.impersonate', $user) }}"> @icon(key) </a></td>
+                <td><a href="{{ route('users.destroy', $user) }}" class="delete-resource"> @icon(trash)</a></td>
             </tr>
         @endforeach
         </tbody>
