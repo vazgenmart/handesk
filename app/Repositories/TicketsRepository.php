@@ -52,6 +52,14 @@ class TicketsRepository
 
         return auth()->user()->teamsTickets()->where('status', '=', Ticket::STATUS_SOLVED);
     }
+    public function spam()
+    {
+        if (auth()->user()->admin) {
+            return Ticket::where('status', '=', Ticket::STATUS_SPAM);
+        }
+
+        return auth()->user()->teamsTickets()->where('status', '=', Ticket::STATUS_SPAM);
+    }
 
     public function closed()
     {

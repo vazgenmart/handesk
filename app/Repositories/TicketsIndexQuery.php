@@ -22,8 +22,8 @@ class TicketsIndexQuery
             $tickets = $repository->solved();
         } elseif (request('closed')) {
             $tickets = $repository->closed();
-        } elseif (request('escalated')) {
-            $tickets = $repository->escalated();
+        } elseif (request('spam')) {
+            $tickets = $repository->spam();
         } else {
             $tickets = $repository->all();
         }
