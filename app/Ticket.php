@@ -36,7 +36,7 @@ class Ticket extends BaseModel
     const TYPE = ['Right of access by the data subject', 'Right to rectification', 'Right to erasure (‘right to be forgotten’)', 'Right to restriction of processing', 'Right to data portability', 'Right to object', 'Other comment or question'];
     const COUNTRY = ['Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Republic of Cyprus', 'Czech Republic', 'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary', 'Ireland', 'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 'Malta', 'Netherlands', 'Poland', 'Portugal', 'Romania', 'Slovakia', 'Slovenia', 'Spain', 'Sweden', 'United Kingdom', 'Other'];
 
-    const REQUEST_TYPE = ['Right of access by the data subject','Right to rectification','Right to erasure (‘right to be forgotten’)','Right to restriction of processing','Right to data portability','Right to object','Other comment or question'];
+    const REQUEST_TYPE = ['Right of access by the data subject', 'Right to rectification', 'Right to erasure (‘right to be forgotten’)', 'Right to restriction of processing', 'Right to data portability', 'Right to object', 'Other comment or question'];
 
     public static function createAndNotify($requester, $title, $body, $tags, $imageNamesAddress, $imageNames)
     {
@@ -197,7 +197,7 @@ class Ticket extends BaseModel
         $comment->new_status = true;
         $comment->ticket_id = $ticket_id;
         $comment->save();
-       // event(new TicketCommented($this, $comment, $previousStatus = null));
+        // event(new TicketCommented($this, $comment, $previousStatus = null));
 
         return $comment;
     }
@@ -233,6 +233,17 @@ class Ticket extends BaseModel
             $ticket->updateStatus(Ticket::STATUS_MERGED);
             $this->mergedTickets()->attach($ticket);
         });
+    }
+
+    public function assign($user, $ticket, $team)
+    {
+        if (request('user_id')) {
+            Ticket::assignTo(request('user_id'), $ticket);
+        }
+        if (request('team_id')) {
+            Ticket::assignToTeam(request('team_id'));
+        }
+
     }
 
     public function updateStatus($status)

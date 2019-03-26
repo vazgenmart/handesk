@@ -2,6 +2,7 @@
 
 namespace App\Thrust;
 
+use App\ThrustHelpers\Actions\AssignTickets;
 use BadChoice\Thrust\Resource;
 use BadChoice\Thrust\Fields\Date;
 use BadChoice\Thrust\Fields\Link;
@@ -76,6 +77,7 @@ class Ticket extends Resource
             new MergeTickets,
             new ChangeStatus,
             new ChangePriority,
+            new AssignTickets,
         ];
     }
 

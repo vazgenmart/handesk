@@ -180,10 +180,10 @@ class TicketsController extends Controller
                 $ticket_id = explode('#', $subject);
                 $ticket_numb = end($ticket_id);
                 $ticket_numb = intval($ticket_numb);
-                $ticket = Ticket::where('id', $ticket_numb)->where('email',$mail)->first();
+                $ticket = Ticket::where('id', $ticket_numb)->where('email', $mail)->first();
 
-                if(!$ticket){
-                  continue;
+                if (!$ticket) {
+                    continue;
                 }
 
                 if (!isset($ids[$ticket_numb])) {
@@ -222,7 +222,7 @@ class TicketsController extends Controller
 //                            var_dump($ticket->first_name);die;
                             $message = $comment->body;
                             date_default_timezone_set('Europe/Berlin');
-                            Mailing::raw($ticket->first_name.' '.$ticket->last_name .' commented on '. date('Y.m.d H:i').' on Ticket#' . $ticket->id.': '.'" ' .$message . ' "', function ($mes) use ($ticket, $comment, $path) {
+                            Mailing::raw($ticket->first_name . ' ' . $ticket->last_name . ' commented on ' . date('Y.m.d H:i') . ' on Ticket#' . $ticket->id . ': ' . '" ' . $message . ' "', function ($mes) use ($ticket, $comment, $path) {
                                 $mes->from(env('MAIL_USERNAME'));
                                 $mes->to($ticket->user->email)->subject('Ticket#' . $ticket->id . ' You have a new Comment! ');
                                 if ($comment && request()->hasFile('attachment')) {
@@ -237,5 +237,4 @@ class TicketsController extends Controller
             }
         }
     }
-
 }
