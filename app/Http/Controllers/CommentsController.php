@@ -11,20 +11,32 @@ class CommentsController extends Controller
 {
     public function store(Ticket $ticket)
     {
-//        var_dump($ticket);
-//        die;
         $this->authorize('view', $ticket);
         $path = '';
-        if (request('private')) {
-            $comment = $ticket->addNote(auth()->user(), request('body'));
+        if (request('private_massage')) {
+//            $comment = $ticket->addNote(auth()->user(), request('body'));
+            $comment = $ticket->addComment(auth()->user(), request('body'), request('new_status'));
+            if ($comment && request()->hasFile('attachment')) {
+                $path = Attachment::storeAttachmentFromRequest(request(), $comment);
+
+            }
+            if ($comment) {
+                $message = $comment->body;
+                date_default_timezone_set('Europe/Berlin');
+                Mail::raw($comment->user->name . ' commented on ' . date('Y.m.d H:i') . ' on Ticket#' . $ticket->id . ': ' . '" ' . $message . ' "', function ($mes) use ($ticket, $comment, $path) {
+                    $mes->from(env('MAIL_USERNAME'));
+                    $mes->to($ticket->user->email)->subject('Ticket#' . $ticket->id . ' You have a new Comment! ');
+                    if ($comment && request()->hasFile('attachment')) {
+                        $mes->attach(storage_path('app/public/attachments/' . $path));
+                    }
+                });
+            }
         } else {
             $comment = $ticket->addComment(auth()->user(), request('body'), request('new_status'));
             if ($comment && request()->hasFile('attachment')) {
                 $path = Attachment::storeAttachmentFromRequest(request(), $comment);
 
             }
-//            echo '<pre>';
-//            var_dump($ticket->user->email);die;
             if ($comment) {
                 $message = $comment->body;
                 Mail::raw($message, function ($mes) use ($ticket, $comment, $path) {
@@ -36,10 +48,10 @@ class CommentsController extends Controller
                 });
             }
 
-            if ($comment && $comment->user->admin == 1){
+            if ($comment && $comment->user->admin == 1) {
                 $message = $comment->body;
                 date_default_timezone_set('Europe/Berlin');
-                Mail::raw( $comment->user->name.' commented on '. date('Y.m.d H:i').' on Ticket#' . $ticket->id.': '.'" ' .$message. ' "', function ($mes) use ($ticket, $comment, $path) {
+                Mail::raw($comment->user->name . ' commented on ' . date('Y.m.d H:i') . ' on Ticket#' . $ticket->id . ': ' . '" ' . $message . ' "', function ($mes) use ($ticket, $comment, $path) {
                     $mes->from(env('MAIL_USERNAME'));
                     $mes->to($ticket->user->email)->subject('Ticket#' . $ticket->id . ' You have a new Comment! ');
                     if ($comment && request()->hasFile('attachment')) {

@@ -1,9 +1,12 @@
 <h4> @icon(inbox) {{ trans_choice('ticket.ticket', 2) }}</h4>
 <ul>
+
     @php ( $repository = new App\Repositories\TicketsRepository )
-    @if( auth()->user()->assistant )
-        @include('components.sidebarItem', ["url" => route('tickets.index') . "?escalated=true",    "title" => __('ticket.escalated'),  "count" => $repository->escalated()     ->count()])
+    @if(  auth()->user()->admin == 0 )
+        {{--@include('components.sidebarItem', ["url" => route('tickets.index') . "?escalated=true",    "title" => __('ticket.escalated'),  "count" => $repository->escalated()     ->count()])--}}
+        @include('components.sidebarItem', ["url" => route('tickets.index') . "?all=true",          "title" => __('My team tickets'),       "count" => $repository->all()               ->count()])
     @endif
+
     @if( auth()->user()->admin )
         @include('components.sidebarItem', ["url" => route('tickets.index') . "?all=true",          "title" => __('ticket.open'),       "count" => $repository->all()               ->count()])
         @include('components.sidebarItem', ["url" => route('tickets.index') . "?unassigned=true",   "title" => __('ticket.unassigned'), "count" => $repository->unassigned()        ->count()])

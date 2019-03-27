@@ -60,11 +60,13 @@
             @if($ticket->isEscalated() )
                 <button class="mt1 uppercase ph3"> @icon(comment) {{ __('ticket.note') }} </button>
             @else
-                {{--<div class="mb1">--}}
-                    {{--{{ __('ticket.note') }}: {{ Form::checkbox('private') }}--}}
-                {{--</div>--}}
+                <div class="mb1">
+                    {{ __('ticket.note') }}: {{ Form::hidden('private_massage') }}
+                </div>
                 <button class="mt1 uppercase ph3">
                     @icon(comment) Answer to data requester</button>
+                <button class="mt1 uppercase ph3 comment_btn" name="comment" value="comment">
+                    @icon(comment) Write comment</button>
                 {{--<span class="dropdown button caret-down"> @icon(caret-down) </span>--}}
                 <ul class="dropdown-container">
                     <li><a class="pointer" onClick="setStatusAndSubmit( {{ App\Ticket::STATUS_OPEN    }} )">
@@ -191,5 +193,9 @@
             },
             users: {!! json_encode(App\Services\Mentions::arrayFor(auth()->user())) !!}
         });
+        
+        $('.comment_btn').on('click', function () {
+            $('input[name = private_massage]').val(1);
+        })
     </script>
 @endsection
