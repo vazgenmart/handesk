@@ -232,6 +232,14 @@ class Ticket extends BaseModel
             $ticket->addNote($user, "Merged with #{$this->id}");
             $ticket->updateStatus(Ticket::STATUS_MERGED);
             $this->mergedTickets()->attach($ticket);
+            $admin = auth()->user()->name;
+            if ($user) {
+                \Mail::raw($admin . ' Merged ticket #' . $ticket->id . ' with ticket #' . $this->id . ' at ' . date('Y.m.d H:i'), function ($message) use ($ticket) {
+                    $message->from(env('MAIL_USERNAME'), 'ticket@dg-datenschutz.de');
+                    $message->to($this->user->email);
+                    $message->subject('Changed status #' . $ticket->id);
+                });
+            }
         });
     }
 
@@ -249,6 +257,14 @@ class Ticket extends BaseModel
     public function updateStatus($status)
     {
         $this->update(['status' => $status, 'updated_at' => Carbon::now()]);
+        $admin = auth()->user()->name;
+        if ($this->user && $status != 6) {
+            \Mail::raw($admin . ' changed ticket #' . $this->id . ' status to ' . $this->statusName(). ' ' . date('Y.m.d H:i'), function ($message) {
+                $message->from(env('MAIL_USERNAME'), 'ticket@dg-datenschutz.de');
+                $message->to($this->user->email);
+                $message->subject('Changed status #' . $this->id);
+            });
+        }
         TicketEvent::make($this, 'Status updated: ' . $this->statusName());
         if ($status == Ticket::STATUS_SOLVED && !$this->rating && config('handesk.sendRatingEmail')) {
 //            $this->requester->notify((new RateTicket($this))->delay(now()->addMinutes(60)));
@@ -258,6 +274,14 @@ class Ticket extends BaseModel
     public function updatePriority($priority)
     {
         $this->update(['priority' => $priority, 'updated_at' => Carbon::now()]);
+        $admin = auth()->user()->name;
+        if ($this->user) {
+            \Mail::raw($admin . ' changed ticket #' . $this->id . ' priority to ' . $this->priorityName(). ' ' . date('Y.m.d H:i'), function ($message) {
+                $message->from(env('MAIL_USERNAME'), 'ticket@dg-datenschutz.de');
+                $message->to($this->user->email);
+                $message->subject('Changed priority #' . $this->id);
+            });
+        }
         TicketEvent::make($this, 'Priority updated: ' . $this->priorityName());
     }
 
