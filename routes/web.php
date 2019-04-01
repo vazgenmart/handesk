@@ -14,6 +14,7 @@
 Route::get('form_blue', 'HomeController@form1');
 Route::get('form_black', 'HomeController@form2');
 Route::get('show/{id}', 'RequestController@show');
+Route::post('/remove_bell', 'TicketsController@removeBell');
 Route::get('/', 'HomeController@form1');
 Route::post('/request_form', 'TicketsController@store');
 

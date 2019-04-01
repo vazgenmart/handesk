@@ -11,6 +11,7 @@ use BadChoice\Thrust\Controllers\ThrustController;
 use Dacastro4\LaravelGmail\Facade\LaravelGmail;
 use Sunra\PhpSimple\HtmlDomParser;
 use Mail as Mailing;
+use Illuminate\Http\Request;
 
 
 class TicketsController extends Controller
@@ -28,9 +29,9 @@ class TicketsController extends Controller
 
     public function show(Ticket $ticket)
     {
-        $this->authorize('view', $ticket);
-        $email = $ticket->email;
-        $this->gmail($email);
+//        $this->authorize('view', $ticket);
+//        $email = $ticket->email;
+//        $this->gmail($email);
         return view('tickets.show', ['ticket' => $ticket]);
     }
 
@@ -134,6 +135,16 @@ class TicketsController extends Controller
         return view('tickets.success');
     }
 
+    public function removeBell(Request $request)
+    {
+        $id = $request->id;
+        $ticket = Ticket::where('id', $id)->first();
+        if (auth()->user()->id != $ticket->updated_by) {
+            $query = Ticket::where('id', $id)->update(['view' => 0]);
+        }
+        return response()->json($id);
+    }
+
     public
     function reopen(Ticket $ticket)
     {
@@ -220,6 +231,8 @@ class TicketsController extends Controller
                             }
 //                            echo '<pre>';
 //                            var_dump($ticket->first_name);die;
+                            Ticket::updateNote($ticket->id);
+                            Ticket::updatedBy($ticket->id, $user = 0);
                             $message = $comment->body;
                             date_default_timezone_set('Europe/Berlin');
                             Mailing::raw($ticket->first_name . ' ' . $ticket->last_name . ' commented on ' . date('Y.m.d H:i') . ' on Ticket#' . $ticket->id . ': ' . '" ' . $message . ' "', function ($mes) use ($ticket, $comment, $path) {

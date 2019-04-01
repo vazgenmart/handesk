@@ -193,7 +193,7 @@
             },
             users: {!! json_encode(App\Services\Mentions::arrayFor(auth()->user())) !!}
         });
-        
+
         $('.comment_btn').on('click', function () {
             $('input[name = private_massage]').val(1);
         })

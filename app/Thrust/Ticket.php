@@ -32,12 +32,17 @@ class Ticket extends Resource
         return [
             //Gravatar::make('requester.email')->withDefault('https://raw.githubusercontent.com/BadChoice/handesk/master/public/images/default-avatar.png'),
             TicketStatusField::make('id', ''),
-            Link::make('title', __('ticket.subject'))->displayCallback(function ($ticket) {
+            Link::make('title', __('ticket.subject'))->rowClass('notification')->displayCallback(function ($ticket) {
                 return "#{$ticket->id} · " . $ticket->request_type;
             })->route('tickets.show')->sortable(),
             Link::make('requester.id', trans_choice('ticket.requester', 1))->displayCallback(function ($ticket) {
                 return $ticket->requester->name ?? '--';
             })->link('tickets?requester_id={field}'),
+            Link::make('tickets.view', __('Note'))->displayCallback(function ($ticket) {
+                if (auth()->user()->id != $ticket->updated_by || $ticket->updated_by == 0) {
+                    return $ticket->view == 1 ? '<i class="fa fa-bell"></i>' : '';
+                }
+            }),
             Link::make('team.id', __('ticket.team'))->displayCallback(function ($ticket) {
                 return $ticket->team->name ?? '--';
             })->link('tickets?team_id={field}'),
@@ -53,7 +58,7 @@ class Ticket extends Resource
     protected function getBaseQuery()
     {
         return TicketsIndexQuery::get()->
-        select('tickets.id as id', 'request_type', 'requester_id', 'tickets.team_id', 'tickets.user_id', 'tickets.created_at as created_at', 'tickets.updated_at as updated_at', 'tickets.status', 'tickets.priority')->
+        select('tickets.id as id', 'request_type', 'requester_id', 'tickets.team_id', 'tickets.user_id', 'tickets.created_at as created_at', 'tickets.updated_at as updated_at', 'tickets.status', 'tickets.priority', 'tickets.view','tickets.updated_by')->
         leftjoin('users', 'users.id', '=', 'tickets.user_id')->
         leftjoin('teams', 'teams.id', '=', 'tickets.team_id')->
         leftjoin('requesters', 'requesters.id', '=', 'tickets.requester_id')->with($this->getWithFields());

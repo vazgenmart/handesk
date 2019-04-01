@@ -67,6 +67,16 @@ class Ticket extends BaseModel
         return $ticket;
     }
 
+    public static function updateNote($id)
+{
+    return Ticket::select('view')->where('id', '=', $id)->update(['view' => 1]);
+}
+
+    public static function updatedBy($id, $user)
+    {
+        return Ticket::select('updated_by')->where('id', '=', $id)->update(['updated_by' => $user]);
+    }
+
     public function updateWith($requester, $priority)
     {
         $requester = Requester::findOrCreate($requester['name'] ?? 'Unknown', $requester['email'] ?? null);
@@ -233,6 +243,8 @@ class Ticket extends BaseModel
             $ticket->updateStatus(Ticket::STATUS_MERGED);
             $this->mergedTickets()->attach($ticket);
             $admin = auth()->user()->name;
+            Ticket::updateNote($this->id);
+            Ticket::updatedBy($this->id, auth()->user()->id);
             if ($user) {
                 \Mail::raw($admin . ' Merged ticket #' . $ticket->id . ' with ticket #' . $this->id . ' at ' . date('Y.m.d H:i'), function ($message) use ($ticket) {
                     $message->from(env('MAIL_USERNAME'), 'ticket@dg-datenschutz.de');
@@ -259,7 +271,7 @@ class Ticket extends BaseModel
         $this->update(['status' => $status, 'updated_at' => Carbon::now()]);
         $admin = auth()->user()->name;
         if ($this->user && $status != 6) {
-            \Mail::raw($admin . ' changed ticket #' . $this->id . ' status to ' . $this->statusName(). ' ' . date('Y.m.d H:i'), function ($message) {
+            \Mail::raw($admin . ' changed ticket #' . $this->id . ' status to ' . $this->statusName() . ' ' . date('Y.m.d H:i'), function ($message) {
                 $message->from(env('MAIL_USERNAME'), 'ticket@dg-datenschutz.de');
                 $message->to($this->user->email);
                 $message->subject('Changed status #' . $this->id);
@@ -276,7 +288,7 @@ class Ticket extends BaseModel
         $this->update(['priority' => $priority, 'updated_at' => Carbon::now()]);
         $admin = auth()->user()->name;
         if ($this->user) {
-            \Mail::raw($admin . ' changed ticket #' . $this->id . ' priority to ' . $this->priorityName(). ' ' . date('Y.m.d H:i'), function ($message) {
+            \Mail::raw($admin . ' changed ticket #' . $this->id . ' priority to ' . $this->priorityName() . ' ' . date('Y.m.d H:i'), function ($message) {
                 $message->from(env('MAIL_USERNAME'), 'ticket@dg-datenschutz.de');
                 $message->to($this->user->email);
                 $message->subject('Changed priority #' . $this->id);

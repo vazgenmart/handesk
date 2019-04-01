@@ -30,7 +30,10 @@ class CommentsController extends Controller
                         $mes->attach(storage_path('app/public/attachments/' . $path));
                     }
                 });
+                Ticket::updateNote($ticket->id);
+                Ticket::updatedBy($ticket->id, $comment->user->id);
             }
+
         } else {
             $comment = $ticket->addComment(auth()->user(), request('body'), request('new_status'));
             if ($comment && request()->hasFile('attachment')) {
@@ -46,6 +49,8 @@ class CommentsController extends Controller
                         $mes->attach(storage_path('app/public/attachments/' . $path));
                     }
                 });
+                Ticket::updateNote($ticket->id);
+                Ticket::updatedBy($ticket->id, $comment->user->id);
             }
 
             if ($comment && $comment->user->admin == 1) {
@@ -58,6 +63,8 @@ class CommentsController extends Controller
                         $mes->attach(storage_path('app/public/attachments/' . $path));
                     }
                 });
+                Ticket::updateNote($ticket->id);
+                Ticket::updatedBy($ticket->id, $comment->user->id);
             }
         }
 

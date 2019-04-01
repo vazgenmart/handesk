@@ -11,6 +11,8 @@ class TicketEvent extends BaseModel
                 'user_id' => auth()->user()->id ?? null,
                 'body'    => $description,
             ]);
+            Ticket::updateNote($ticket->id);
+            Ticket::updatedBy($ticket->id, auth()->user()->id);
         }
     }
 
