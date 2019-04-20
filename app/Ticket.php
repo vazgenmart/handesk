@@ -29,6 +29,11 @@ class Ticket extends BaseModel
     const STATUS_MERGED = 6;
     const STATUS_SPAM = 7;
 
+    const ADMIN_SEEN = 1;
+    const USER_SEEN = 2;
+    const NOT_SEEN = 3;
+    const SEEN = 0;
+
     const PRIORITY_LOW = 1;
     const PRIORITY_NORMAL = 2;
     const PRIORITY_HIGH = 3;
@@ -68,11 +73,26 @@ class Ticket extends BaseModel
     }
 
     public static function updateNote($id)
-{
-    return Ticket::select('view')->where('id', '=', $id)->update(['view' => 1]);
-}
+    {
+        if (auth()->user()->admin == 1){
+            return Ticket::select('view')->where('id', '=', $id)->update(['view' => self::ADMIN_SEEN]);
+        }else{
+            return Ticket::select('view')->where('id', '=', $id)->update(['view' => self::USER_SEEN]);
+        }
+
+    }
+
+    public static function updateNoteByDataUser($id)
+    {
+        return Ticket::select('view')->where('id', '=', $id)->update(['view' => self::NOT_SEEN]);
+    }
 
     public static function updatedBy($id, $user)
+    {
+        return Ticket::select('updated_by')->where('id', '=', $id)->update(['updated_by' => $user]);
+    }
+
+    public static function updatedByDataUser($id, $user = -1)
     {
         return Ticket::select('updated_by')->where('id', '=', $id)->update(['updated_by' => $user]);
     }

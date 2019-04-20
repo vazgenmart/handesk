@@ -18,20 +18,20 @@ class TicketsController extends Controller
 {
     public function index()
     {
-//        $ticket = Ticket::where('status', [1, 2])->get();
-//        foreach ($ticket as $mail) {
-//            $email = $mail->email;
-//            $this->gmail($email);
-//        }
+        $ticket = Ticket::where('status', [1, 2])->get();
+        foreach ($ticket as $mail) {
+            $email = $mail->email;
+            $this->gmail($email);
+        }
         return (new ThrustController)->index('tickets');
     }
 
 
     public function show(Ticket $ticket)
     {
-//        $this->authorize('view', $ticket);
-//        $email = $ticket->email;
-//        $this->gmail($email);
+        $this->authorize('view', $ticket);
+        $email = $ticket->email;
+        $this->gmail($email);
         return view('tickets.show', ['ticket' => $ticket]);
     }
 
@@ -139,8 +139,25 @@ class TicketsController extends Controller
     {
         $id = $request->id;
         $ticket = Ticket::where('id', $id)->first();
-        if (auth()->user()->id != $ticket->updated_by) {
-            $query = Ticket::where('id', $id)->update(['view' => 0]);
+        if ($ticket->updated_by != auth()->user()->id) {
+            if (auth()->user()->admin == 1) {
+                if ($ticket->updated_by == -1 && $ticket->view != Ticket::NOT_SEEN) {
+                    $query = Ticket::where('id', $id)->update(['view' => Ticket::SEEN]);
+                }  elseif ($ticket->updated_by != -1) {
+                    $query = Ticket::where('id', $id)->update(['view' => Ticket::SEEN]);
+                }else{
+                    $query = Ticket::where('id', $id)->update(['view' => Ticket::ADMIN_SEEN]);
+                }
+            } else {
+                if ($ticket->updated_by == -1 && $ticket->view != Ticket::NOT_SEEN) {
+                    $query = Ticket::where('id', $id)->update(['view' => Ticket::SEEN]);
+                } elseif ($ticket->updated_by != -1) {
+                    $query = Ticket::where('id', $id)->update(['view' => Ticket::SEEN]);
+                }else{
+                    $query = Ticket::where('id', $id)->update(['view' => Ticket::USER_SEEN]);
+                }
+            }
+
         }
         return response()->json($id);
     }
@@ -231,8 +248,8 @@ class TicketsController extends Controller
                             }
 //                            echo '<pre>';
 //                            var_dump($ticket->first_name);die;
-                            Ticket::updateNote($ticket->id);
-                            Ticket::updatedBy($ticket->id, $user = 0);
+                            Ticket::updateNoteByDataUser($ticket->id);
+                            Ticket::updatedByDataUser($ticket->id, $user = -1);
                             $message = $comment->body;
                             date_default_timezone_set('Europe/Berlin');
                             Mailing::raw($ticket->first_name . ' ' . $ticket->last_name . ' commented on ' . date('Y.m.d H:i') . ' on Ticket#' . $ticket->id . ': ' . '" ' . $message . ' "', function ($mes) use ($ticket, $comment, $path) {

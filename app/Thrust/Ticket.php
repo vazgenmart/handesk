@@ -39,9 +39,16 @@ class Ticket extends Resource
                 return $ticket->requester->name ?? '--';
             })->link('tickets?requester_id={field}'),
             Link::make('tickets.view', __('Note'))->displayCallback(function ($ticket) {
-                if (auth()->user()->id != $ticket->updated_by || $ticket->updated_by == 0) {
-                    return $ticket->view == 1 ? '<i class="fa fa-bell"></i>' : '';
+                if (auth()->user()->admin == 1){
+                    if ($ticket->view != Tickets::ADMIN_SEEN && $ticket->view != Tickets::SEEN){
+                        return  '<i class="fa fa-bell"></i>' ;
+                    }
+                }else{
+                    if ($ticket->view != Tickets::USER_SEEN && $ticket->view != Tickets::SEEN){
+                        return  '<i class="fa fa-bell"></i>' ;
+                    }
                 }
+
             }),
             Link::make('team.id', __('ticket.team'))->displayCallback(function ($ticket) {
                 return $ticket->team->name ?? '--';
@@ -58,7 +65,7 @@ class Ticket extends Resource
     protected function getBaseQuery()
     {
         return TicketsIndexQuery::get()->
-        select('tickets.id as id', 'request_type', 'requester_id', 'tickets.team_id', 'tickets.user_id', 'tickets.created_at as created_at', 'tickets.updated_at as updated_at', 'tickets.status', 'tickets.priority', 'tickets.view','tickets.updated_by')->
+        select('tickets.id as id', 'request_type', 'requester_id', 'tickets.team_id', 'tickets.user_id', 'tickets.created_at as created_at', 'tickets.updated_at as updated_at', 'tickets.status', 'tickets.priority', 'tickets.view', 'tickets.updated_by')->
         leftjoin('users', 'users.id', '=', 'tickets.user_id')->
         leftjoin('teams', 'teams.id', '=', 'tickets.team_id')->
         leftjoin('requesters', 'requesters.id', '=', 'tickets.requester_id')->with($this->getWithFields());
