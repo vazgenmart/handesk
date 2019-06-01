@@ -140,7 +140,7 @@
         </tr>
         <tr>
             <th scope="row" style="font-weight: bold">Request Type</th>
-            <td colspan="2">{{  $ticket->request_type }}</td>
+            <td colspan="2">{{ $ticket->request_type }}</td>
         </tr>
         <tr>
             <th scope="row" style="font-weight: bold">Created Date</th>

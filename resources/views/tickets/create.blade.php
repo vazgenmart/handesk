@@ -132,18 +132,22 @@
             </tr>
             <tr>
                 <td>{{ __('Request Type') }}:</td>
-                <td class="w100"><select id="request" name="request_type" title="Request Type" aria-required="true"
-                                         class="input">
+                <td class="w100">
+                    <select id="request" name="request_type" title="Request Type" aria-required="true"
+                            class="input">
+                        <?php $types = \App\Thrust\Ticket::$request_type?>
                         <option value="">Please select...</option>
-                        <option value="0" {{ old('request_type') === '0' ? 'selected' : '' }} id="request1" class="">Right of access by the data subject</option>
-                        <option value="1" {{ old('request_type') == 1 ? 'selected' : '' }} id="request2" class="">Right to rectification</option>
-                        <option value="2" {{ old('request_type') == 2 ? 'selected' : '' }} id="request3" class="">Right to erasure (‘right to be forgotten’)
-                        </option>
-                        <option value="3" {{ old('request_type') == 3 ? 'selected' : '' }} id="request4" class="">Right to restriction of processing</option>
-                        <option value="4" {{ old('request_type') == 4 ? 'selected' : '' }} id="request5" class="">Right to data portability</option>
-                        <option value="5" {{ old('request_type') == 5 ? 'selected' : '' }} id="request6" class="">Right to object</option>
-                        <option value="6" {{ old('request_type') == 6 ? 'selected' : '' }} id="request7" class="">Other comment or question</option>
+                        @foreach($types as $key => $type)
+                            <option value="{{$type}}"
+                                    {{ old('request_type') == $type ? 'selected' : '' }} id="request1"
+                                    class="">{{$type}}
+                            </option>
+
+                        @endforeach
                     </select>
+                    @if(isset($messages['request_type']))
+                        <div style="color: red">{{$messages['request_type']}}</div>
+                    @endif
                 </td>
             </tr>
             <tr>
@@ -157,26 +161,26 @@
 
     <div class="comment new-comment">
         <table class="maxw600 no-padding">
-            <tr>
-                <td class="w20">{{ __('ticket.subject') }}:</td>
-                <td><input name="title" class="w100" required @if(old('title'))
-                    value="{{ old('title') }}"
-                           @else
-                           value=""
-                            @endif/></td>
-            </tr>
-            <tr>
-                <td>{{ trans_choice('ticket.tag', 2)}}:</td>
-                <td><input name="tags" id="tags" @if(old('tags'))
-                    value="{{ old('tags') }}"
-                           @else
-                           value=""
-                            @endif/></td>
-            </tr>
-            <tr>
-                <td>{{ __('ticket.comment')         }}:</td>
-                <td><textarea name="body" required>{{old('body') ? old('body') : '' }}</textarea></td>
-            </tr>
+{{--            <tr>--}}
+{{--                <td class="w20">{{ __('ticket.subject') }}:</td>--}}
+{{--                <td><input name="title" class="w100" required @if(old('title'))--}}
+{{--                    value="{{ old('title') }}"--}}
+{{--                           @else--}}
+{{--                           value=""--}}
+{{--                            @endif/></td>--}}
+{{--            </tr>--}}
+{{--            <tr>--}}
+{{--                <td>{{ trans_choice('ticket.tag', 2)}}:</td>--}}
+{{--                <td><input name="tags" id="tags" @if(old('tags'))--}}
+{{--                    value="{{ old('tags') }}"--}}
+{{--                           @else--}}
+{{--                           value=""--}}
+{{--                            @endif/></td>--}}
+{{--            </tr>--}}
+{{--            <tr>--}}
+{{--                <td>{{ __('ticket.comment')         }}:</td>--}}
+{{--                <td><textarea name="body" required>{{old('body') ? old('body') : '' }}</textarea></td>--}}
+{{--            </tr>--}}
             @include('components.assignTeamField')
             <tr>
                 <td>{{ __('ticket.status') }}:</td>
