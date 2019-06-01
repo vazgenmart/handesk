@@ -2,10 +2,10 @@
     {{ Form::open(["url" => route("{$endpoint}.assign", $object)]) }}
 
     <table class="w50 no-padding">
-        <tr>
-            <td class="small"> {{ trans_choice('ticket.tag',2) }}:</td>
-            <td colspan="2"><input id="tags" name="tags" value="{{$object->tagsString()}}"></td>
-        </tr>
+{{--        <tr>--}}
+{{--            <td class="small"> {{ trans_choice('ticket.tag',2) }}:</td>--}}
+{{--            <td colspan="2"><input id="tags" name="tags" value="{{$object->tagsString()}}"></td>--}}
+{{--        </tr>--}}
         @can("assignToTeam", $object)
             @include('components.assignTeamField', ["team" => $object->team])
         @endcan

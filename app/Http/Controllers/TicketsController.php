@@ -19,10 +19,10 @@ class TicketsController extends Controller
     public function index()
     {
         $ticket = Ticket::where('status', [1, 2])->get();
-        foreach ($ticket as $mail) {
-            $email = $mail->email;
-            $this->gmail($email);
-        }
+//        foreach ($ticket as $mail) {
+//            $email = $mail->email;
+//            $this->gmail($email);
+//        }
         return (new ThrustController)->index('tickets');
     }
 
@@ -30,8 +30,8 @@ class TicketsController extends Controller
     public function show(Ticket $ticket)
     {
         $this->authorize('view', $ticket);
-        $email = $ticket->email;
-        $this->gmail($email);
+//        $email = $ticket->email;
+//        $this->gmail($email);
         return view('tickets.show', ['ticket' => $ticket]);
     }
 

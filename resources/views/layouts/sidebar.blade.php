@@ -12,10 +12,10 @@
     {{--@endif--}}
 
 
-    <h4> @icon(bar-chart) {{ trans_choice('report.report', 2) }}</h4>
-    <ul>
-        @include('components.sidebarItem', ["url" => route('reports.index'), "title" => trans_choice('report.report', 2) ])
-    </ul>
+{{--    <h4> @icon(bar-chart) {{ trans_choice('report.report', 2) }}</h4>--}}
+{{--    <ul>--}}
+{{--        @include('components.sidebarItem', ["url" => route('reports.index'), "title" => trans_choice('report.report', 2) ])--}}
+{{--    </ul>--}}
 
 
     <h4> @icon(cog) {{ trans_choice('admin.admin',2) }}</h4>

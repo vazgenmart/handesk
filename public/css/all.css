@@ -1884,3 +1884,7 @@ button:focus {
     margin-top: 15px;
     font-weight: bold;
 }
+
+#normal {
+    display: none;
+}
