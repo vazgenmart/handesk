@@ -3,6 +3,7 @@
 namespace App\Thrust;
 
 use App\ThrustHelpers\Actions\AssignTickets;
+use App\User;
 use BadChoice\Thrust\Resource;
 use BadChoice\Thrust\Fields\Date;
 use BadChoice\Thrust\Fields\Link;
@@ -18,15 +19,21 @@ use App\ThrustHelpers\Filters\PriorityFilter;
 use App\ThrustHelpers\Filters\EscalatedFilter;
 use App\ThrustHelpers\Fields\TicketStatusField;
 use App\Ticket as Tickets;
+use BadChoice\Thrust\ResourceFilters\Filters;
+use BadChoice\Thrust\ResourceFilters\Search;
+use BadChoice\Thrust\ResourceFilters\Sort;
+use http\Env\Request;
 
 class Ticket extends Resource
 {
     public static $model = \App\Ticket::class;
-    public static $search = ['tickets.request_type', 'tickets.requester_id', 'tickets.team_id', 'users.name', 'tickets.id'];
+    public static $search = ['tickets.request_type', 'tickets.requester_id', 'teams.name', 'users.name', 'tickets.id', 'tickets.user_id'];
     public static $defaultSort = 'tickets.updated_at';
     public static $defaultOrder = 'tickets.desc';
     public static $request_type = ['Right of access by the data subject', ' Right to rectification', 'Right to erasure (‘right to be forgotten’)', ' Right to restriction of processing', 'Right to data portability', 'Right to object', 'Other comment or question'];
+    protected $pagination = 500;
 
+//    protected $pagination = 1;
     public function fields()
     {
         return [
@@ -39,13 +46,13 @@ class Ticket extends Resource
                 return $ticket->requester->name ?? '--';
             })->link('tickets?requester_id={field}'),
             Link::make('tickets.view', __('Note'))->displayCallback(function ($ticket) {
-                if (auth()->user()->admin == 1){
-                    if ($ticket->view != Tickets::ADMIN_SEEN && $ticket->view != Tickets::SEEN){
-                        return  '<i class="fa fa-bell"></i>' ;
+                if (auth()->user()->admin == 1) {
+                    if ($ticket->view != Tickets::ADMIN_SEEN && $ticket->view != Tickets::SEEN) {
+                        return '<i class="fa fa-bell"></i>';
                     }
-                }else{
-                    if ($ticket->view != Tickets::USER_SEEN && $ticket->view != Tickets::SEEN){
-                        return  '<i class="fa fa-bell"></i>' ;
+                } else {
+                    if ($ticket->view != Tickets::USER_SEEN && $ticket->view != Tickets::SEEN) {
+                        return '<i class="fa fa-bell"></i>';
                     }
                 }
 
@@ -62,13 +69,61 @@ class Ticket extends Resource
         ];
     }
 
+    public function query()
+    {
+        $user = new User();
+        $teamsTickets = $user->userTeamIds();
+        $teamsTickets = array_values((array)$teamsTickets);
+        $query = $this->getBaseQuery();
+        if (request('search')) {
+            Search::apply($query, request('search'), static::$search);
+            if (!auth()->user()->admin) {
+//                $query->where('tickets.user_id', auth()->user()->id)->orWhereIn('tickets.team_id', $teamsTickets[0]);
+                $query->where(function ($query) use ($teamsTickets) {
+                $query->where('tickets.user_id', auth()->user()->id)->orWhereIn('tickets.team_id', $teamsTickets[0]);
+                });
+            }
+
+        }
+
+        if (static::$sortable) {
+            Sort::apply($query, static::$sortField, 'ASC');
+        } else if (request('sort')) {
+            Sort::apply($query, request('sort'), request('sort_order'));
+        } else {
+            Sort::apply($query, static::$defaultSort, static::$defaultOrder);
+        }
+
+        if (request('filters')) {
+            Filters::applyFromRequest($query, request('filters'));
+        }
+        return $query;
+    }
+
     protected function getBaseQuery()
     {
+
         return TicketsIndexQuery::get()->
         select('tickets.id as id', 'request_type', 'requester_id', 'tickets.team_id', 'tickets.user_id', 'tickets.created_at as created_at', 'tickets.updated_at as updated_at', 'tickets.status', 'tickets.priority', 'tickets.view', 'tickets.updated_by')->
         leftjoin('users', 'users.id', '=', 'tickets.user_id')->
         leftjoin('teams', 'teams.id', '=', 'tickets.team_id')->
         leftjoin('requesters', 'requesters.id', '=', 'tickets.requester_id')->with($this->getWithFields());
+    }
+
+    protected function getBaseQuerySearch()
+    {
+
+        $query = TicketsIndexQuery::get()->
+        select('tickets.id as id', 'request_type', 'requester_id', 'tickets.team_id', 'tickets.user_id', 'tickets.created_at as created_at', 'tickets.updated_at as updated_at', 'tickets.status', 'tickets.priority', 'tickets.view', 'tickets.updated_by')->
+        leftjoin('users', 'users.id', '=', 'tickets.user_id')->
+        leftjoin('teams', 'teams.id', '=', 'tickets.team_id')->
+        leftjoin('requesters', 'requesters.id', '=', 'tickets.requester_id');
+        if (auth()->user()->admin) {
+            $query->with($this->getWithFields());
+        } else {
+            $query->where('tickets.team_id', auth()->user()->id)->with($this->getWithFields());
+        }
+        return $query;
     }
 
     public function update($id, $newData)
