@@ -4,10 +4,10 @@
         <div class="breadcrumb">
             <a href="{{ route('tickets.index') }}">{{ trans_choice('ticket.ticket', 2) }}</a>
         </div>
-        <h3>#{{ $ticket->id }}. {{ $ticket->title }} </h3>
-        <div class="mb2">
-            @include('components.ticket.rating')
-        </div>
+        <h3>#{{ $ticket->id }}. {{ $ticket->request_type }} </h3>
+{{--        <div class="mb2">--}}
+{{--            @include('components.ticket.rating')--}}
+{{--        </div>--}}
         <div id="ticket-info" class="float-left">
             @busy <span
                     class="label ticket-status-{{ $ticket->statusName() }}">{{ __("ticket." . $ticket->statusName() ) }}</span>

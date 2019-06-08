@@ -18,15 +18,21 @@ use BadChoice\Thrust\Actions\Action;
 
 class AssignTickets extends Action
 {
+
     public function fields()
     {
+        $teams = Team::get()->pluck('name', 'id')->toArray();
 
+        $users = User::get()->pluck('name', 'id')->toArray();
         return [
-            Select::make('team_id')->options(
-                Team::get()->pluck('name', 'id')
+            Select::make('team_id', 'Team')->options(
+                $teams, true
+
             ),
-            Select::make('user_id')->options(
-                User::get()->pluck('name', 'id')
+            Select::make('user_id', 'Agent')->options(
+                $users, true
+
+
             ),
         ];
 
